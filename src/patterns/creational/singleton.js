@@ -16,17 +16,19 @@ function singleton(_Constructor) {
    *
    * @implements _Constructor (inheritance)
    * @return {object} instance which is only created once.
+   *
+   * reverted ES2015 class for Babel strict requirements of "super" at the top
+   * https://github.com/pgarciacamou/patterns/commit/0dae49df5a93e430ed70da80eb73cacd47e821ad
    */
-  class Singleton extends _Constructor {
-    constructor(...args) {
-      super(...args);
-      if(instance !== undefined) { return instance; }
-      return instance = this;
-    }
-    static destroy (){
-      instance = undefined;
-    }
+  function Singleton() {
+    if(instance !== undefined) { return instance; }
+    instance = this;
+    _Constructor.apply(instance, arguments);
   }
+  Singleton.prototype = Object.create(_Constructor.prototype);
+  Singleton.prototype.constructor = _Constructor;
+  Singleton.super = _Constructor;
+  Singleton.destroy = function () { instance = undefined; };
   return Singleton;
 }
 
