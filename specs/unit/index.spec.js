@@ -5,11 +5,13 @@ describe('BDD', function() {
   var SingletonClass;
   var NormalClass;
   var singletonInstance;
+  var executionSpy;
   beforeEach(function() {
     executionTimes = 0;
+    executionSpy = jasmine.createSpy("executionSpy");
     class _Class {
       constructor() {
-        executionTimes++;
+        executionSpy();
       }
       static staticMethod (argument) {}
       publicMethod () {}
@@ -21,7 +23,7 @@ describe('BDD', function() {
 
   it('should create a singleton', function() {
     expect(new SingletonClass()).toEqual(singletonInstance);
-    expect(executionTimes).toEqual(1);
+    expect(executionSpy.calls.count()).toEqual(1);
   });
   it('should have access to static methods', function() {
     expect(SingletonClass.super.staticMethod).toEqual(NormalClass.staticMethod);
@@ -34,5 +36,10 @@ describe('BDD', function() {
   it('should use inheritance', function() {
     expect(singletonInstance instanceof SingletonClass).toBeTruthy();
     expect(singletonInstance instanceof NormalClass).toBeTruthy();
+  });
+  it('can destroy the instance', function() {
+    SingletonClass.destroy();
+    new SingletonClass();
+    expect(executionSpy.calls.count()).toEqual(2);
   });
 });
