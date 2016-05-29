@@ -26,6 +26,9 @@ function singleton(_constructor) {
   Singleton.prototype = Object.create(_constructor.prototype);
   Singleton.prototype.constructor = _constructor;
   Singleton.super = _constructor;
+  Singleton.destroy = function () {
+    instance = undefined;
+  };
   return Singleton;
 }
 
