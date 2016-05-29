@@ -1,0 +1,25 @@
+{
+  "name": "patterns",
+  "version": "0.0.0",
+  "description": "JavaScript Design Pattern Generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgarciacamou/patterns.git"
+  },
+  "keywords": [
+    "Design",
+    "Patterns",
+    "Pattern",
+    "Generator"
+  ],
+  "author": "Pablo Garcia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pgarciacamou/patterns/issues"
+  },
+  "homepage": "https://github.com/pgarciacamou/patterns#readme"
+}
