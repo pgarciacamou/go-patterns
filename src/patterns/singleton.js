@@ -1,13 +1,31 @@
-function singleton(_class) {
+/**
+ * @method
+ *
+ * Creates a constructor which implements a design pattern
+ * called Singleton.
+ *
+ * @return {class} Singleton constructor
+ * @param {class} _constructor predecessor
+ */
+function singleton(_constructor) {
   var instance;
+
+  /**
+   * @constructor
+   *
+   * always returns the first instance
+   *
+   * @implements _constructor (inheritance)
+   * @return {object} instance which is only created once.
+   */
   function Singleton() {
     if(instance !== undefined) { return instance; }
-    _class.apply((instance = this), arguments);
+    _constructor.apply((instance = this), arguments);
     return instance;
   }
-  Singleton.prototype = Object.create(_class.prototype);
-  Singleton.prototype.constructor = _class;
-  Singleton.super = _class;
+  Singleton.prototype = Object.create(_constructor.prototype);
+  Singleton.prototype.constructor = _constructor;
+  Singleton.super = _constructor;
   return Singleton;
 }
 
