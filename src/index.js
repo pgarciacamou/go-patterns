@@ -1,4 +1,4 @@
-import singleton from './patterns/singleton.js'
+import singleton from './patterns/creational/singleton.js'
 
 var patterns = {
   singleton,
