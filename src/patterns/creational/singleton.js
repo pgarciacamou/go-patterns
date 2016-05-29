@@ -1,34 +1,32 @@
 /**
  * @method
  *
- * Creates a constructor which implements a design pattern
- * called Singleton.
+ * A class with only a single instance with global access points.
  *
  * @return {class} Singleton constructor
- * @param {class} _constructor predecessor
+ * @param {class} _Constructor predecessor
  */
-function singleton(_constructor) {
+function singleton(_Constructor) {
   var instance;
 
   /**
-   * @constructor
+   * @class
    *
    * always returns the first instance
    *
-   * @implements _constructor (inheritance)
+   * @implements _Constructor (inheritance)
    * @return {object} instance which is only created once.
    */
-  function Singleton() {
-    if(instance !== undefined) { return instance; }
-    _constructor.apply((instance = this), arguments);
-    return instance;
+  class Singleton extends _Constructor {
+    constructor(...args) {
+      super(...args);
+      if(instance !== undefined) { return instance; }
+      return instance = this;
+    }
+    static destroy (){
+      instance = undefined;
+    }
   }
-  Singleton.prototype = Object.create(_constructor.prototype);
-  Singleton.prototype.constructor = _constructor;
-  Singleton.super = _constructor;
-  Singleton.destroy = function () {
-    instance = undefined;
-  };
   return Singleton;
 }
 
