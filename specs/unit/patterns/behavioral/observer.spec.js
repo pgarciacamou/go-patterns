@@ -1,21 +1,22 @@
 import observer from "../../../../src/patterns/behavioral/observer.js";
 
 describe('observer pattern', function() {
-  var obs;
   var updateSpy;
+  var testObserver;
   beforeEach(function() {
     updateSpy = jasmine.createSpy("test");
-    obs = observer("test", updateSpy);
+    testObserver = observer("test");
+    testObserver.add(updateSpy);
   });
   afterEach(function() {
-    obs.destroy();
+    testObserver.remove(updateSpy);
   });
   it('should create an observer', function() {
-    expect(obs).toBeDefined();
+    expect(testObserver).toBeDefined();
   });
   it('should notify the observer', function() {
-    observer.notify("test");
-    observer.notify("test");
+    testObserver.notify();
+    testObserver.notify();
     expect(updateSpy).toHaveBeenCalled();
     expect(updateSpy.calls.count()).toEqual(2);
   });

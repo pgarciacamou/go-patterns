@@ -1,40 +1,65 @@
 var subjects = {};
 
 /**
- * @method
- * @public
+ * @class
+ * @implements method chainable pattern
  *
  * A way of notifying change to a number of classes to ensure consistency between the classes.
  *
  * @param {String} subject name
  * @param {Function} update callback
  */
-export default function observer(subject, update) {
-  var sub = subjects[subject] = subjects[subject] || [];
-  if(sub.indexOf(update) === -1) {
-    sub.push(update);
-    return {
-      update,
-      destroy() {
-        sub.splice(sub.indexOf(update), 1);
-      }
-    };
+class Observer {
+  constructor(subject) {
+    this.list = [];
+    this.subject = subject;
+  }
+
+  /**
+   * @method
+   * @public
+   *
+   * @param {Function} update callback
+   */
+  add(update) {
+    if(this.list.indexOf(update) === -1) {
+      this.list.push(update);
+    }
+    return this;
+  }
+
+  /**
+   * @method
+   * @public
+   *
+   * @param {Function} update callback
+   */
+  remove(update) {
+    this.list.splice(this.list.indexOf(update), 1);
+    return this;
+  }
+
+  /**
+   * @method
+   * @public
+   *
+   * @param {DataSet} data sent to every update
+   */
+  notify(...data) {
+    this.list.forEach(update => { update(...data); });
+    return this;
   }
 }
 
 /**
  * @method
  * @public
- * @static
  *
- * will trigger the subject to notify the observers.
+ * creates an Observer for a specific subject.
  *
  * @param {String} subject name
- * @param {Object} data sent to observers
  */
-observer.notify = function(subject, data) {
-  var sub = subjects[subject];
-  sub.forEach(function (obs) {
-    obs(data);
-  });
-};
+export default function observer(subject) {
+  if(subjects[subject]) { return subjects[subject]; }
+  return subjects[subject] = new Observer(subject);
+}
