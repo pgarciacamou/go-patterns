@@ -20,4 +20,8 @@ describe('observer pattern', function() {
     expect(updateSpy).toHaveBeenCalled();
     expect(updateSpy.calls.count()).toEqual(2);
   });
+  it('should implement method chainable pattern', function() {
+    testObserver.add(()=>{}).add(()=>{});
+    expect(testObserver.list.length).toEqual(3);
+  });
 });
