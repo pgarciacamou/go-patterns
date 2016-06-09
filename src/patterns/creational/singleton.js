@@ -21,10 +21,9 @@ function singleton(_Constructor) {
    * https://github.com/pgarciacamou/patterns/commit/0dae49df5a93e430ed70da80eb73cacd47e821ad
    */
   function Singleton() {
-    var context = this !== window ? this : Object.create(Singleton.prototype);
     if(instance !== undefined) { return instance; }
-    instance = _Constructor.apply(context, arguments) || context;
-    return instance;
+    _Constructor.apply(this, arguments);
+    return (instance = this);
   }
   Singleton.prototype = Object.create(_Constructor.prototype);
   Singleton.prototype.constructor = _Constructor;
