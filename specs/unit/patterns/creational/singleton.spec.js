@@ -43,4 +43,18 @@ describe('Singleton', function() {
     new SingletonClass("test");
     expect(executionSpy.calls.count()).toEqual(2);
   });
+  fdescribe('complex functionality', function() {
+    var regularFunction;
+    var S;
+    var s;
+    beforeEach(function() {
+      regularFunction = _ => "test";
+      S = singleton(regularFunction);
+      s = new S();
+      console.log(s);
+    });
+    it('should return a simple string', function() {
+      expect(s).toEqual("test");
+    });
+  });
 });

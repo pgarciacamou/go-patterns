@@ -22,8 +22,9 @@ function singleton(_Constructor) {
    */
   function Singleton() {
     if(instance !== undefined) { return instance; }
-    instance = this;
-    _Constructor.apply(instance, arguments);
+    instance = _Constructor.apply(this, arguments) || this;
+    console.log(instance);
+    return instance;
   }
   Singleton.prototype = Object.create(_Constructor.prototype);
   Singleton.prototype.constructor = _Constructor;
