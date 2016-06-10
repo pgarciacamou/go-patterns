@@ -11,6 +11,13 @@ describe('Factory', function() {
   var hondaCar, hondaOptions = {
     name: "accord"
   };
+  it('should be documented', function() {
+    fail();
+  });
+  it('should be able to share common functionality', function() {
+    // this has to do with factory(prototype)
+    fail();
+  });
   beforeEach(function() {
     Toyota = class {
       constructor(options) {

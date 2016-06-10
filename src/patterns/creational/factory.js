@@ -1,15 +1,19 @@
+import extend from "../../helpers/extend.js";
+
 /**
  * @class
  *
  */
 class Factory {
-  constructor () {
+  constructor (prototype) {
     this.classes = {};
+    this.__prototype = prototype;
   }
   add(className, _Constructor) {
     if(this.classes[className] !== undefined) {
       throw new Error("class is already defined in factory");
     }
+    _Constructor.prototype = extend(Object.create(_Constructor.prototype), this.__prototype, _Constructor.prototype);
     this.classes[className] = _Constructor;
     return this;
   }
