@@ -116,6 +116,14 @@ describe('Factory', function() {
     var corolla;
     var camry;
     beforeEach(function() {
+      var singletonFactory = fac => {
+        return singleton(class {
+          constructor() {
+            this.__fac = fac;
+          }
+        });
+      };
+
       /**
        * I also used a singleton as I only want to return
        * a factory once and not multiple new factories.
@@ -126,36 +134,44 @@ describe('Factory', function() {
        * factory of services, etc.
        */
       FactoryOfFactories = factory()
-      .add("Honda", singleton(
-        _ => factory()
-        .add("civic", _ => {
-          this.name = "civic";
-          this.brand = "honda";
+      .add("HondaFactory", singletonFactory(
+        factory()
+        .add("civic", class {
+          constructor() {
+            this.name = "civic";
+            this.brand = "honda";
+          }
         })
-        .add("accord", _ => {
-          this.name = "accord";
-          this.brand = "honda";
+        .add("accord", class {
+          constructor() {
+            this.name = "accord";
+            this.brand = "honda";
+          }
         })
       ))
-      .add("Toyota", singleton(
-        _ => factory()
-        .add("corolla", _ => {
-          this.name = "corolla";
-          this.brand = "toyota";
+      .add("ToyotaFactory", singletonFactory(
+        factory()
+        .add("corolla", class {
+          constructor() {
+            this.name = "corolla";
+            this.brand = "toyota";
+          }
         })
-        .add("camry", _ => {
-          this.name = "camry";
-          this.brand = "toyota";
+        .add("camry", class {
+          constructor() {
+            this.name = "camry";
+            this.brand = "toyota";
+          }
         })
       ));
 
-      HondaFactory = FactoryOfFactories.create("Honda");
-      ToyotaFactory = FactoryOfFactories.create("Toyota");
+      HondaFactory = FactoryOfFactories.create("HondaFactory").__fac;
+      ToyotaFactory = FactoryOfFactories.create("ToyotaFactory").__fac;
 
       civic = HondaFactory.create("civic");
       accord = HondaFactory.create("accord");
-      corolla = HondaFactory.create("corolla");
-      camry = HondaFactory.create("camry");
+      corolla = ToyotaFactory.create("corolla");
+      camry = ToyotaFactory.create("camry");
     });
     it('should crete the factories', function() {
       expect(HondaFactory).toBeDefined();

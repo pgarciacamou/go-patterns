@@ -30,8 +30,8 @@ class Factory {
   }
 }
 
-function factory(...args){
-  return new Factory(...args);
+function factory(){
+  return new Factory();
 }
 
 export default factory;
