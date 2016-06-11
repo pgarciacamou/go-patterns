@@ -1,5 +1,10 @@
 import extend from "./extend.js";
 
+/**
+ * @method
+ * @param  {Object} options holds the constructor, prototype, and static props.
+ * @return {Class}
+ */
 function createClass(options){
   if(options === undefined) { options = {}; }
   options = extend({

@@ -5,9 +5,6 @@ describe('create class helper', function() {
   var instance1;
   var publicSpy1;
   var staticSpy1;
-  it('should be documented', function() {
-    fail();
-  });
   beforeEach(function() {
     publicSpy1 = jasmine.createSpy("public");
     staticSpy1 = jasmine.createSpy("static");
