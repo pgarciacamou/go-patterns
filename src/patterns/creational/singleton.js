@@ -1,7 +1,7 @@
 /**
  * @method
  *
- * A class with only a single instance with global access points.
+ * Singleton: A class with only a single instance with global access points.
  *
  * @return {class} Singleton constructor
  * @param {class} _Constructor predecessor
