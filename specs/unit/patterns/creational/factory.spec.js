@@ -8,11 +8,6 @@ describe('Factory', function() {
   var commonFunctionality;
   var toyotaCar, toyotaOptions;
   var hondaCar, hondaOptions;
-
-  it('should be documented', function() {
-    fail();
-  });
-
   beforeEach(function() {
     commonFunctionality = {
       turnOn: jasmine.createSpy("turnOnSpy")
