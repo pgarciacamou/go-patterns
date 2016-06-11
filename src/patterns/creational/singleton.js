@@ -1,3 +1,5 @@
+import extend from "../../helpers/extend.js";
+
 /**
  * @method
  *
@@ -25,10 +27,14 @@ function singleton(_Constructor) {
     _Constructor.apply(this, arguments);
     return (instance = this);
   }
-  Singleton.prototype = Object.create(_Constructor.prototype);
-  Singleton.prototype.constructor = _Constructor;
-  Singleton.super = _Constructor;
-  Singleton.destroy = function () { instance = undefined; };
+  Singleton.prototype = extend(
+    Object.create(_Constructor.prototype), 
+    { constructor: _Constructor }
+  );
+  extend(Singleton, {
+    super: _Constructor,
+    destroy: _ => { instance = undefined; }
+  });
   return Singleton;
 }
 
