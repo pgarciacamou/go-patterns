@@ -13,7 +13,13 @@ class Factory {
     if(this.classes[className] !== undefined) {
       throw new Error("class is already defined in factory");
     }
+
+    // Adds the common functionality to the _Constructor
+    // This will give priority to the object's prototype,
+    // that is why it looks odd.
     _Constructor.prototype = extend(Object.create(_Constructor.prototype), this.__prototype, _Constructor.prototype);
+    _Constructor.prototype.constructor = _Constructor;
+
     this.classes[className] = _Constructor;
     return this;
   }
@@ -34,8 +40,8 @@ class Factory {
   }
 }
 
-function factory(){
-  return new Factory();
+function factory(...args){
+  return new Factory(...args);
 }
 
 export default factory;
