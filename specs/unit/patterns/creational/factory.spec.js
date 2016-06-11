@@ -5,13 +5,17 @@ describe('Factory', function() {
   var vehicleFactory;
   var Toyota;
   var Honda;
-  var toyotaCar, toyotaOptions = {
-    name: "camry"
-  };
-  var hondaCar, hondaOptions = {
-    name: "accord"
-  };
+  var commonFunctionality;
+  var toyotaCar, toyotaOptions;
+  var hondaCar, hondaOptions;
   beforeEach(function() {
+    commonFunctionality = {
+      turnOn: jasmine.createSpy("turnOnSpy")
+    };
+
+    toyotaOptions = { name: "camry" };
+    hondaOptions = { name: "accord" };
+
     Toyota = class {
       constructor(options) {
         this.name = options.name;
@@ -26,12 +30,17 @@ describe('Factory', function() {
       }
     };
 
-    vehicleFactory = factory()
+    vehicleFactory = factory(commonFunctionality)
     .add("honda", Honda)
     .add("toyota", Toyota);
 
     hondaCar = vehicleFactory.create("honda", hondaOptions);
     toyotaCar = vehicleFactory.create("toyota", hondaOptions);
+  });
+  it('should be able to share common functionality', function() {
+    hondaCar.turnOn();
+    toyotaCar.turnOn();
+    expect(commonFunctionality.turnOn.calls.count()).toEqual(2);
   });
   it('should be able to receive multiple arguments', function() {
     var arg1 = 1, arg2 = "2", arg3 = {}, arg4 = _ => {};
