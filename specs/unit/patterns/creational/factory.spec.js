@@ -21,6 +21,12 @@ describe('Factory', function() {
     CarFactory = factory({
       constructor: function (name) {
         this._name = name;
+      },
+      publics: {
+        test: "test"
+      },
+      statics: {
+        test: "test"
       }
     }).__class();
 
@@ -31,132 +37,49 @@ describe('Factory', function() {
     Toyota.add("corolla", Corolla);
 
     civic = Honda.create("civic", 2016);
-    corolla = Toyota.create("corolla", 2016);
+    corolla = Toyota.create("corolla", 2015);
   });
-  it("should create a Factory", function() {
+  it('should create a Factory', function() {
     expect(CarFactory).toBeDefined();
     expect(Honda).toBeDefined();
     expect(Toyota).toBeDefined();
     expect(Honda._name).toEqual("Honda San Diego");
     expect(Toyota._name).toEqual("Toyota San Diego");
   });
+  it('should inherit the expected functionality', function() {
+    expect(civic instanceof Civic).toBeTruthy();
+    expect(civic.year).toEqual(2016);
+    expect(corolla instanceof Corolla).toBeTruthy();
+    expect(corolla.year).toEqual(2015);
+  });
+  it('should be able to define public properties/functionality', function() {
+    expect(Honda.test).toBeDefined();
+    expect(Toyota.test).toBeDefined();
+  });
+  it('should be able to define static properties/functionality', function() {
+    expect(CarFactory.test).toBeDefined();
+  });
 
-
-
-
-  // var vehicleFactory;
-  // var Toyota;
-  // var Honda;
-  // var commonFunctionality;
-  // var toyotaCar, toyotaOptions;
-  // var hondaCar, hondaOptions;
-  // beforeEach(function() {
-  //   commonFunctionality = {
-  //     turnOn: jasmine.createSpy("turnOnSpy")
-  //   };
-
-  //   toyotaOptions = { name: "camry" };
-  //   hondaOptions = { name: "accord" };
-
-  //   Toyota = class {
-  //     constructor(options) {
-  //       this.name = options.name;
-  //       this.brand = "toyota";
-  //     }
-  //   };
-
-  //   Honda = class {
-  //     constructor(options) {
-  //       this.name = options.name;
-  //       this.brand = "honda";
-  //     }
-  //   };
-
-  //   vehicleFactory = factory(commonFunctionality)
-  //   .add("honda", Honda)
-  //   .add("toyota", Toyota);
-
-  //   hondaCar = vehicleFactory.create("honda", hondaOptions);
-  //   toyotaCar = vehicleFactory.create("toyota", hondaOptions);
-  // });
-  // it('should be able to share common functionality', function() {
-  //   hondaCar.turnOn();
-  //   toyotaCar.turnOn();
-  //   expect(commonFunctionality.turnOn.calls.count()).toEqual(2);
-  // });
-  // it('should be able to receive multiple arguments', function() {
-  //   var arg1 = 1, arg2 = "2", arg3 = {}, arg4 = _ => {};
-
-  //   var spy = jasmine.createSpy("spy");
-  //   var f = factory()
-  //   .add("test", spy);
-
-  //   f.create("test", arg1, arg2, arg3, arg4);
-  //   expect(spy).toHaveBeenCalledWith(arg1, arg2, arg3, arg4);
-  // });
-  // it('should implement chainable method pattern', function() {
-  //   expect(
-  //     vehicleFactory.add("test", _ => {})
-  //   ).toEqual(vehicleFactory);
-  // });
-  // it('should contain 2 classes', function() {
-
-  //   expect(vehicleFactory.count()).toEqual(2);
-  //   expect(vehicleFactory.contains(Honda)).toBeTruthy();
-  //   expect(vehicleFactory.contains(Toyota)).toBeTruthy();
-  // });
-  // it('shouldn\'t allow duplicates', function() {
-  //   expect(
-  //     _ => vehicleFactory.add("honda", _ => {})
-  //   ).toThrowError("class is already defined in factory");
-  // });
-  // it('should throw if class doesn\' exist', function() {
-  //   expect(
-  //     _ => vehicleFactory.create("EMPTY")
-  //   ).toThrowError("class is not defined in factory");
-  // });
-  // it('should create new instances', function() {
-  //   expect(hondaCar instanceof Honda).toBeTruthy();
-  //   expect(toyotaCar instanceof Toyota).toBeTruthy();
-  // });
-
-  // describe('Singleton Factory Example', function() {
-  //   var singletonFactory;
-  //   var SingletonHonda;
-  //   var SingletonToyota;
-  //   beforeEach(function() {
-  //     // not that you will ever do this for car factories
-  //     // but for the purpose of this explanation.
-  //     SingletonHonda = singleton(Honda);
-  //     SingletonToyota = singleton(Toyota);
-
-  //     singletonFactory = factory()
-  //     .add("honda", SingletonHonda)
-  //     .add("toyota", SingletonToyota);
-
-  //     hondaCar = singletonFactory.create("honda", hondaOptions);
-  //     toyotaCar = singletonFactory.create("toyota", toyotaOptions);
-  //   });
-
-  //   it('should create an instance', function() {
-  //     expect(hondaCar instanceof SingletonHonda).toBeTruthy();
-  //     expect(hondaCar instanceof Honda).toBeTruthy();
-  //     expect(toyotaCar instanceof SingletonToyota).toBeTruthy();
-  //     expect(toyotaCar instanceof Toyota).toBeTruthy();
-  //   });
-  //   it('should always be the same instance', function() {
-  //     // even if the options are removed, it should always return the same car.
-  //     // this is because I'm adding singletons to the factory.
-  //     expect(singletonFactory.create("honda")).toEqual(hondaCar);
-  //     expect(singletonFactory.create("toyota")).toEqual(toyotaCar);
-  //   });
-  //   it('should contain Singleton implementation and not the normal Factories', function() {
-  //     expect(singletonFactory.contains(SingletonToyota)).toBeTruthy();
-  //     expect(singletonFactory.contains(SingletonHonda)).toBeTruthy();
-  //     expect(singletonFactory.contains(Honda)).not.toBeTruthy();
-  //     expect(singletonFactory.contains(Toyota)).not.toBeTruthy();
-  //   });
-  // });
+  describe('Mid Level: Singleton Factory', function() {
+    var SingletonFactory;
+    var Constructor;
+    var singletonFactory;
+    beforeEach(function() {
+      Constructor = function (arg) {
+        this.param = arg;
+      }
+      SingletonFactory = singleton(factory({
+        constructor: Constructor
+      })).__class();
+      singletonFactory = new SingletonFactory("test");
+    });
+    it('should be a singleton', function() {
+      expect(new SingletonFactory() === singletonFactory).toBeTruthy();
+    });
+    it('should pass the sanity test', function() {
+      expect(singletonFactory.param).toEqual("test");
+    });
+  });
 
   // describe('Advanced Level: Factory of Factories', function() {
   //   var HondaFactory;
