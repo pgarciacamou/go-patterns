@@ -9,14 +9,19 @@ describe('Singleton', function() {
   beforeEach(function() {
     executionTimes = 0;
     executionSpy = jasmine.createSpy("executionSpy");
-    class _Class {
-      constructor(param1) {
-        executionSpy(param1);
-      }
-      static staticMethod (argument) {}
-      publicMethod () {}
+    function _Class(param1){
+      executionSpy(param1);
     }
-    SingletonClass = singleton(_Class);
+      
+    SingletonClass = singleton({
+      constructor: _Class,
+      publics: {
+        publicMethod () {}
+      },
+      statics: {
+        staticMethod (argument) {}
+      }
+    }).build();
     NormalClass = _Class;
     singletonInstance = new SingletonClass("test");
   });
@@ -27,9 +32,7 @@ describe('Singleton', function() {
     expect(executionSpy.calls.count()).toEqual(1);
   });
   it('should have access to static methods', function() {
-    expect(SingletonClass.super.staticMethod).toEqual(NormalClass.staticMethod);
-    expect(SingletonClass.super).toEqual(NormalClass);
-    expect(SingletonClass.super).toEqual(SingletonClass.prototype.constructor);
+    expect(SingletonClass.staticMethod).toBeDefined();
   });
   it('should have access to public methods', function() {
     expect(singletonInstance.publicMethod).toBeDefined();

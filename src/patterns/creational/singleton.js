@@ -8,8 +8,24 @@ import extend from "../../helpers/extend.js";
  * @return {class} Singleton constructor
  * @param {class} _Constructor predecessor
  */
-function singleton(_Constructor) {
+function singleton(options) {
+  options = options || {};
+  options = extend({
+    constructor: function () {},
+    publics: {},
+    statics: {}
+  }, options);
+
   var instance;
+  var prevDistroyer = options.statics.destroy;
+  extend(options.statics, {
+    destroy(...args) {
+      instance = undefined;
+      if(prevDistroyer !== undefined) {
+        prevDistroyer.apply(this, args);
+      }
+    }
+  });
 
   /**
    * @class
@@ -22,20 +38,25 @@ function singleton(_Constructor) {
    * reverted ES2015 class for Babel strict requirements of "super" at the top
    * https://github.com/pgarciacamou/patterns/commit/0dae49df5a93e430ed70da80eb73cacd47e821ad
    */
-  function Singleton() {
+  function Singleton(...args) {
     if(instance !== undefined) { return instance; }
-    _Constructor.apply(this, arguments);
+    options.constructor.apply(this, args);
     return (instance = this);
   }
   Singleton.prototype = extend(
-    Object.create(_Constructor.prototype), 
-    { constructor: _Constructor }
+    Object.create(options.constructor.prototype),
+    { constructor: options.constructor },
+    options.publics
   );
-  extend(Singleton, {
-    super: _Constructor,
-    destroy: _ => { instance = undefined; }
-  });
-  return Singleton;
+
+  return {
+    constructor: Singleton,
+    publics: Singleton.prototype,
+    statics: options.statics,
+    build() {
+      return extend(Singleton, options.statics);
+    }
+  };
 }
 
 export default singleton;

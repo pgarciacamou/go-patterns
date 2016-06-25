@@ -19,7 +19,7 @@ describe('Factory', function() {
       }
     };
     CarFactory = factory({
-      constructor: function (name) {
+      constructor(name) {
         this._name = name;
       },
       publics: {
@@ -28,7 +28,7 @@ describe('Factory', function() {
       statics: {
         test: "test"
       }
-    }).__class();
+    }).build();
 
     Honda = new CarFactory("Honda San Diego");
     Toyota = new CarFactory("Toyota San Diego");
@@ -70,96 +70,56 @@ describe('Factory', function() {
       }
       SingletonFactory = singleton(factory({
         constructor: Constructor
-      })).__class();
+      })).build();
       singletonFactory = new SingletonFactory("test");
     });
     it('should be a singleton', function() {
       expect(new SingletonFactory() === singletonFactory).toBeTruthy();
     });
-    it('should pass the sanity test', function() {
+    it('should work as a constructor', function() {
       expect(singletonFactory.param).toEqual("test");
     });
   });
 
-  // describe('Advanced Level: Factory of Factories', function() {
-  //   var HondaFactory;
-  //   var ToyotaFactory;
-  //   var FactoryOfFactories;
-  //   var civic;
-  //   var accord;
-  //   var corolla;
-  //   var camry;
-  //   beforeEach(function() {
-  //     var singletonFactory = fac => {
-  //       return singleton(class {
-  //         constructor() {
-  //           this.__fac = fac;
-  //         }
-  //       });
-  //     };
+  describe('Advanced Leve: Factory of factories', function() {
+    var FactoryOfFactories;
+    var factoryOfFactories;
+    var Factory;
+    var SingletonFactory;
+    var _factory;
+    var singletonFactory;
+    var factorySpy;
+    var singletonSpy;
 
-  //     /**
-  //      * I also used a singleton as I only want to return
-  //      * a factory once and not multiple new factories.
-  //      *
-  //      * With this, you can see that the sky is the limit.
-  //      * You might not need to have this type of factories,
-  //      * but you can scale this idea to something like a
-  //      * factory of services, etc.
-  //      */
-  //     FactoryOfFactories = factory()
-  //     .add("HondaFactory", singletonFactory(
-  //       factory()
-  //       .add("civic", class {
-  //         constructor() {
-  //           this.name = "civic";
-  //           this.brand = "honda";
-  //         }
-  //       })
-  //       .add("accord", class {
-  //         constructor() {
-  //           this.name = "accord";
-  //           this.brand = "honda";
-  //         }
-  //       })
-  //     ))
-  //     .add("ToyotaFactory", singletonFactory(
-  //       factory()
-  //       .add("corolla", class {
-  //         constructor() {
-  //           this.name = "corolla";
-  //           this.brand = "toyota";
-  //         }
-  //       })
-  //       .add("camry", class {
-  //         constructor() {
-  //           this.name = "camry";
-  //           this.brand = "toyota";
-  //         }
-  //       })
-  //     ));
+    beforeEach(function() {
+      factorySpy = jasmine.createSpy("factorySpy");
+      singletonSpy = jasmine.createSpy("singletonSpy");
+      FactoryOfFactories = factory({
+        constructor(a) {}
+      }).build();
+      Factory = factory({
+        constructor: factorySpy
+      }).build();
+      SingletonFactory = singleton(factory({
+        constructor: singletonSpy
+      })).build();
 
-  //     HondaFactory = FactoryOfFactories.create("HondaFactory").__fac;
-  //     ToyotaFactory = FactoryOfFactories.create("ToyotaFactory").__fac;
+      factoryOfFactories = new FactoryOfFactories();
+      factoryOfFactories.add("factory", Factory);
+      factoryOfFactories.add("singleton", SingletonFactory);
 
-  //     civic = HondaFactory.create("civic");
-  //     accord = HondaFactory.create("accord");
-  //     corolla = ToyotaFactory.create("corolla");
-  //     camry = ToyotaFactory.create("camry");
-  //   });
-  //   it('should crete the factories', function() {
-  //     expect(HondaFactory).toBeDefined();
-  //     expect(ToyotaFactory).toBeDefined();
-  //   });
-  //   it('should have created the cars', function() {
-  //     expect(civic.name).toEqual("civic");
-  //     expect(civic.brand).toEqual("honda");
-  //     expect(accord.name).toEqual("accord");
-  //     expect(accord.brand).toEqual("honda");
-  //     expect(corolla.name).toEqual("corolla");
-  //     expect(corolla.brand).toEqual("toyota");
-  //     expect(camry.name).toEqual("camry");
-  //     expect(camry.brand).toEqual("toyota");
-  //   });
-  // });
+      _factory = factoryOfFactories.create("factory");
+      singletonFactory = factoryOfFactories.create("singleton");
+    });
+    it('should have created a Factory', function() {
+      expect(_factory).toBeDefined();
+      expect(factorySpy).toHaveBeenCalledTimes(1);
+    });
+    it('should have created a SingletonFactory', function() {
+      expect(singleton).toBeDefined();
+      expect(singletonSpy).toHaveBeenCalledTimes(1);
+      factoryOfFactories.create("singleton");
+      expect(singletonSpy).toHaveBeenCalledTimes(1);
+    });
+  });
 });

@@ -1,5 +1,4 @@
 import extend from "../../helpers/extend.js";
-import recursiveInheritance from "../../helpers/recursive-inheritance.js";
 
 /**
  * A Factory Pattern: makes an instance of several
@@ -9,6 +8,7 @@ import recursiveInheritance from "../../helpers/recursive-inheritance.js";
  * @return {Factory} factory instance
  */
 function factory(options) {
+  options = options || {};
   options = extend({
     constructor: function () {},
     publics: {},
@@ -20,7 +20,7 @@ function factory(options) {
     options.constructor.apply(this, args);
   }
   Factory.prototype = extend(
-    Object.create(options.constructor), 
+    Object.create(options.constructor.prototype), 
     { 
       constructor: Factory,
 
@@ -28,7 +28,7 @@ function factory(options) {
        * @param {String} className
        * @param {Class} __class
        */
-      add: function(className, __class) {
+      add(className, __class) {
         if(this.__classes[className] !== undefined) {
           throw new Error("class is already defined in factory");
         }
@@ -41,7 +41,7 @@ function factory(options) {
        * @param  {Array} args
        * @return {Object}
        */
-      create(className, ...args){
+      create(className, ...args) {
         if(this.__classes[className] === undefined) {
           throw new Error("class is not defined in factory");
         }
@@ -55,7 +55,7 @@ function factory(options) {
     constructor: Factory,
     publics: Factory.prototype,
     statics: options.statics,
-    __class: function () {
+    build: _ => {
       return extend(Factory, options.statics);
     }
   };
