@@ -1,65 +1,106 @@
-var subjects = {};
-
-/**
- * @class
- * @implements method chainable pattern
- *
- * A way of notifying change to a number of classes to ensure consistency between the classes.
- *
- * @param {String} subject name
- * @param {Function} update callback
- */
-class Observer {
-  constructor(subject) {
-    this.list = [];
-    this.subject = subject;
-  }
-
-  /**
-   * @method
-   * @public
-   *
-   * @param {Function} update callback
-   */
-  add(update) {
-    if(this.list.indexOf(update) === -1) {
-      this.list.push(update);
-    }
-    return this;
-  }
-
-  /**
-   * @method
-   * @public
-   *
-   * @param {Function} update callback
-   */
-  remove(update) {
-    this.list.splice(this.list.indexOf(update), 1);
-    return this;
-  }
-
-  /**
-   * @method
-   * @public
-   *
-   * @param {DataSet} data sent to every update
-   */
-  notify(...data) {
-    this.list.forEach(update => { update(...data); });
-    return this;
-  }
-}
+import extend from "../../helpers/extend.js";
 
 /**
  * @method
  * @public
  *
- * creates an Observer for a specific subject.
+ * applies an Observer pattern to a constructor.
  *
  * @param {String} subject name
  */
-export default function observer(subject) {
-  if(subjects[subject]) { return subjects[subject]; }
-  return subjects[subject] = new Observer(subject);
+function observer(options) {
+  options = options || {};
+  options = extend({
+    constructor: function () {},
+    publics: {},
+    statics: {}
+  }, options);
+
+  /**
+   * @class
+   * @implements method chainable pattern
+   *
+   * A way of notifying change to a number of classes to ensure consistency between the classes.
+   */
+  function Observer() {
+    this.subjects = {};
+  }
+  Observer.prototype = extend(
+    Object.create(options.constructor.prototype),
+    {
+      constructor: options.constructor,
+
+      /**
+       * @method
+       * @public
+       *
+       * @param {Function} callback
+       */
+      add(subject, callback) {
+        var subjectContainer = this._getSubject(subject);
+        if(subjectContainer.indexOf(callback) === -1) {
+          subjectContainer.push(callback);
+        }
+        return this;
+      },
+
+      /**
+       * @method
+       * @public
+       *
+       * @param {Function} callback
+       */
+      remove(subject, callback) {
+        var subjectContainer = this._getSubject(subject);
+        var index = subjectContainer.indexOf(callback);
+        if(index > -1) {
+          subjectContainer.splice(index, 1);
+        }
+        return this;
+      },
+
+      /**
+       * @method
+       * @public
+       *
+       * @param {DataSet} data sent to every callback
+       */
+      notify(subject, ...data) {
+        var subjectContainer = this._getSubject(subject);
+        subjectContainer.forEach(callback => { callback(...data); });
+        return this;
+      },
+
+      /**
+       * counts the amount of observers for a given subject
+       * @param  {String} subject
+       * @return {Number}         observer count
+       */
+      count(subject) {
+        return this._getSubject(subject).length;
+      },
+
+      /**
+       * @private method that makes sure a subject exists
+       * @param  {String} subject
+       * @return {Array}          subject container
+       */
+      _getSubject(subject) {
+        return this.subjects[subject] = this.subjects[subject] || [];
+      }
+
+    },
+    options.publics
+  );
+
+  return {
+    constructor: Observer,
+    publics: Observer.prototype,
+    statics: options.statics,
+    build() {
+      return extend(Observer, options.statics);
+    }
+  };
 }
+
+export default observer;
