@@ -1,0 +1,38 @@
+{
+  "name": "patterns",
+  "version": "0.0.0",
+  "description": "JavaScript Design Pattern Generator",
+  "main": "index.js",
+  "scripts": {
+    "dist": "./node_modules/browserify/bin/cmd.js ./src/index.js -o ./dist/bundle.js -t [ babelify --presets [ es2015 ] ]",
+    "test": "./node_modules/karma/bin/karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgarciacamou/patterns.git"
+  },
+  "keywords": [
+    "Design",
+    "Patterns",
+    "Pattern",
+    "Generator"
+  ],
+  "author": "Pablo Garcia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pgarciacamou/patterns/issues"
+  },
+  "homepage": "https://github.com/pgarciacamou/patterns#readme",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-browserify": "^5.0.5",
+    "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.7",
+    "watchify": "^3.7.0"
+  }
+}
