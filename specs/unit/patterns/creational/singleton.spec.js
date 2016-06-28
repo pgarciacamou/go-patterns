@@ -42,7 +42,7 @@ describe('Singleton', function() {
     expect(singletonInstance instanceof NormalClass).toBeTruthy();
   });
   it('can destroy the instance', function() {
-    SingletonClass.destroy();
+    singletonInstance.destroy();
     new SingletonClass("test");
     expect(executionSpy.calls.count()).toEqual(2);
   });

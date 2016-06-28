@@ -81,7 +81,7 @@ describe('Factory', function() {
     });
   });
 
-  describe('Advanced Leve: Factory of factories', function() {
+  describe('Advanced Level: Factory of factories', function() {
     var FactoryOfFactories;
     var factoryOfFactories;
     var Factory;
@@ -95,7 +95,9 @@ describe('Factory', function() {
       factorySpy = jasmine.createSpy("factorySpy");
       singletonSpy = jasmine.createSpy("singletonSpy");
       FactoryOfFactories = factory({
-        constructor(a) {}
+        constructor(a) {},
+        publics: {},
+        statics: {}
       }).build();
       Factory = factory({
         constructor: factorySpy
