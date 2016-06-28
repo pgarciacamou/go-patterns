@@ -2,199 +2,126 @@ import factory from "../../../../src/patterns/creational/factory.js";
 import singleton from "../../../../src/patterns/creational/singleton.js";
 
 describe('Factory', function() {
-  var vehicleFactory;
-  var Toyota;
-  var Honda;
-  var commonFunctionality;
-  var toyotaCar, toyotaOptions;
-  var hondaCar, hondaOptions;
+  var Car;
+  var CarFactory;
+  var Honda, Civic, civic;
+  var Toyota, Corolla, corolla;
+  
   beforeEach(function() {
-    commonFunctionality = {
-      turnOn: jasmine.createSpy("turnOnSpy")
-    };
-
-    toyotaOptions = { name: "camry" };
-    hondaOptions = { name: "accord" };
-
-    Toyota = class {
-      constructor(options) {
-        this.name = options.name;
-        this.brand = "toyota";
+    Civic = class {
+      constructor(year) {
+        this.year = year;
       }
     };
-
-    Honda = class {
-      constructor(options) {
-        this.name = options.name;
-        this.brand = "honda";
+    Corolla = class {
+      constructor(year) {
+        this.year = year;
       }
     };
+    CarFactory = factory({
+      constructor(name) {
+        this._name = name;
+      },
+      publics: {
+        test: "test"
+      },
+      statics: {
+        test: "test"
+      }
+    }).build();
 
-    vehicleFactory = factory(commonFunctionality)
-    .add("honda", Honda)
-    .add("toyota", Toyota);
+    Honda = new CarFactory("Honda San Diego");
+    Toyota = new CarFactory("Toyota San Diego");
 
-    hondaCar = vehicleFactory.create("honda", hondaOptions);
-    toyotaCar = vehicleFactory.create("toyota", hondaOptions);
-  });
-  it('should be able to share common functionality', function() {
-    hondaCar.turnOn();
-    toyotaCar.turnOn();
-    expect(commonFunctionality.turnOn.calls.count()).toEqual(2);
-  });
-  it('should be able to receive multiple arguments', function() {
-    var arg1 = 1, arg2 = "2", arg3 = {}, arg4 = _ => {};
+    Honda.add("civic", Civic);
+    Toyota.add("corolla", Corolla);
 
-    var spy = jasmine.createSpy("spy");
-    var f = factory()
-    .add("test", spy);
-
-    f.create("test", arg1, arg2, arg3, arg4);
-    expect(spy).toHaveBeenCalledWith(arg1, arg2, arg3, arg4);
+    civic = Honda.create("civic", 2016);
+    corolla = Toyota.create("corolla", 2015);
   });
-  it('should implement chainable method pattern', function() {
-    expect(
-      vehicleFactory.add("test", _ => {})
-    ).toEqual(vehicleFactory);
+  it('should create a Factory', function() {
+    expect(CarFactory).toBeDefined();
+    expect(Honda).toBeDefined();
+    expect(Toyota).toBeDefined();
+    expect(Honda._name).toEqual("Honda San Diego");
+    expect(Toyota._name).toEqual("Toyota San Diego");
   });
-  it('should contain 2 classes', function() {
-
-    expect(vehicleFactory.count()).toEqual(2);
-    expect(vehicleFactory.contains(Honda)).toBeTruthy();
-    expect(vehicleFactory.contains(Toyota)).toBeTruthy();
+  it('should inherit the expected functionality', function() {
+    expect(civic instanceof Civic).toBeTruthy();
+    expect(civic.year).toEqual(2016);
+    expect(corolla instanceof Corolla).toBeTruthy();
+    expect(corolla.year).toEqual(2015);
   });
-  it('shouldn\'t allow duplicates', function() {
-    expect(
-      _ => vehicleFactory.add("honda", _ => {})
-    ).toThrowError("class is already defined in factory");
+  it('should be able to define public properties/functionality', function() {
+    expect(Honda.test).toBeDefined();
+    expect(Toyota.test).toBeDefined();
   });
-  it('should throw if class doesn\' exist', function() {
-    expect(
-      _ => vehicleFactory.create("EMPTY")
-    ).toThrowError("class is not defined in factory");
-  });
-  it('should create new instances', function() {
-    expect(hondaCar instanceof Honda).toBeTruthy();
-    expect(toyotaCar instanceof Toyota).toBeTruthy();
+  it('should be able to define static properties/functionality', function() {
+    expect(CarFactory.test).toBeDefined();
   });
 
-  describe('Singleton Factory Example', function() {
+  describe('Mid Level: Singleton Factory', function() {
+    var SingletonFactory;
+    var Constructor;
     var singletonFactory;
-    var SingletonHonda;
-    var SingletonToyota;
     beforeEach(function() {
-      // not that you will ever do this for car factories
-      // but for the purpose of this explanation.
-      SingletonHonda = singleton(Honda);
-      SingletonToyota = singleton(Toyota);
-
-      singletonFactory = factory()
-      .add("honda", SingletonHonda)
-      .add("toyota", SingletonToyota);
-
-      hondaCar = singletonFactory.create("honda", hondaOptions);
-      toyotaCar = singletonFactory.create("toyota", toyotaOptions);
+      Constructor = function (arg) {
+        this.param = arg;
+      }
+      SingletonFactory = singleton(factory({
+        constructor: Constructor
+      })).build();
+      singletonFactory = new SingletonFactory("test");
     });
-
-    it('should create an instance', function() {
-      expect(hondaCar instanceof SingletonHonda).toBeTruthy();
-      expect(hondaCar instanceof Honda).toBeTruthy();
-      expect(toyotaCar instanceof SingletonToyota).toBeTruthy();
-      expect(toyotaCar instanceof Toyota).toBeTruthy();
+    it('should be a singleton', function() {
+      expect(new SingletonFactory() === singletonFactory).toBeTruthy();
     });
-    it('should always be the same instance', function() {
-      // even if the options are removed, it should always return the same car.
-      // this is because I'm adding singletons to the factory.
-      expect(singletonFactory.create("honda")).toEqual(hondaCar);
-      expect(singletonFactory.create("toyota")).toEqual(toyotaCar);
-    });
-    it('should contain Singleton implementation and not the normal Factories', function() {
-      expect(singletonFactory.contains(SingletonToyota)).toBeTruthy();
-      expect(singletonFactory.contains(SingletonHonda)).toBeTruthy();
-      expect(singletonFactory.contains(Honda)).not.toBeTruthy();
-      expect(singletonFactory.contains(Toyota)).not.toBeTruthy();
+    it('should work as a constructor', function() {
+      expect(singletonFactory.param).toEqual("test");
     });
   });
 
-  describe('Advanced Level: Factory of Factories', function() {
-    var HondaFactory;
-    var ToyotaFactory;
+  describe('Advanced Level: Factory of factories', function() {
     var FactoryOfFactories;
-    var civic;
-    var accord;
-    var corolla;
-    var camry;
+    var factoryOfFactories;
+    var Factory;
+    var SingletonFactory;
+    var _factory;
+    var singletonFactory;
+    var factorySpy;
+    var singletonSpy;
+
     beforeEach(function() {
-      var singletonFactory = fac => {
-        return singleton(class {
-          constructor() {
-            this.__fac = fac;
-          }
-        });
-      };
+      factorySpy = jasmine.createSpy("factorySpy");
+      singletonSpy = jasmine.createSpy("singletonSpy");
+      FactoryOfFactories = factory({
+        constructor(a) {},
+        publics: {},
+        statics: {}
+      }).build();
+      Factory = factory({
+        constructor: factorySpy
+      }).build();
+      SingletonFactory = singleton(factory({
+        constructor: singletonSpy
+      })).build();
 
-      /**
-       * I also used a singleton as I only want to return
-       * a factory once and not multiple new factories.
-       *
-       * With this, you can see that the sky is the limit.
-       * You might not need to have this type of factories,
-       * but you can scale this idea to something like a
-       * factory of services, etc.
-       */
-      FactoryOfFactories = factory()
-      .add("HondaFactory", singletonFactory(
-        factory()
-        .add("civic", class {
-          constructor() {
-            this.name = "civic";
-            this.brand = "honda";
-          }
-        })
-        .add("accord", class {
-          constructor() {
-            this.name = "accord";
-            this.brand = "honda";
-          }
-        })
-      ))
-      .add("ToyotaFactory", singletonFactory(
-        factory()
-        .add("corolla", class {
-          constructor() {
-            this.name = "corolla";
-            this.brand = "toyota";
-          }
-        })
-        .add("camry", class {
-          constructor() {
-            this.name = "camry";
-            this.brand = "toyota";
-          }
-        })
-      ));
+      factoryOfFactories = new FactoryOfFactories();
+      factoryOfFactories.add("factory", Factory);
+      factoryOfFactories.add("singleton", SingletonFactory);
 
-      HondaFactory = FactoryOfFactories.create("HondaFactory").__fac;
-      ToyotaFactory = FactoryOfFactories.create("ToyotaFactory").__fac;
-
-      civic = HondaFactory.create("civic");
-      accord = HondaFactory.create("accord");
-      corolla = ToyotaFactory.create("corolla");
-      camry = ToyotaFactory.create("camry");
+      _factory = factoryOfFactories.create("factory");
+      singletonFactory = factoryOfFactories.create("singleton");
     });
-    it('should crete the factories', function() {
-      expect(HondaFactory).toBeDefined();
-      expect(ToyotaFactory).toBeDefined();
+    it('should have created a Factory', function() {
+      expect(_factory).toBeDefined();
+      expect(factorySpy).toHaveBeenCalledTimes(1);
     });
-    it('should have created the cars', function() {
-      expect(civic.name).toEqual("civic");
-      expect(civic.brand).toEqual("honda");
-      expect(accord.name).toEqual("accord");
-      expect(accord.brand).toEqual("honda");
-      expect(corolla.name).toEqual("corolla");
-      expect(corolla.brand).toEqual("toyota");
-      expect(camry.name).toEqual("camry");
-      expect(camry.brand).toEqual("toyota");
+    it('should have created a SingletonFactory', function() {
+      expect(singleton).toBeDefined();
+      expect(singletonSpy).toHaveBeenCalledTimes(1);
+      factoryOfFactories.create("singleton");
+      expect(singletonSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
