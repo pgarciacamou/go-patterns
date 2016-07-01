@@ -2,7 +2,7 @@ import patterns from '../../src/index.js'
 
 describe('patterns API', function() {
   it('should describe an API', function() {
-    expect(Object.keys(patterns).length).toEqual(5);
+    expect(Object.keys(patterns).length).toEqual(6);
   });
   it('should contain patterns', function() {
     expect(patterns.singleton).toBeDefined();
@@ -10,5 +10,6 @@ describe('patterns API', function() {
     expect(patterns.publishSubscribe).toBeDefined();
     expect(patterns.chainOfResponsibility).toBeDefined();
     expect(patterns.mediator).toBeDefined();
+    expect(patterns.command).toBeDefined();
   });
 });
