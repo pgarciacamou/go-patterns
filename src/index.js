@@ -3,13 +3,15 @@ import factory from './patterns/creational/factory.js';
 import publishSubscribe from './patterns/behavioral/publishSubscribe.js';
 import chainOfResponsibility from './patterns/behavioral/chainOfResponsibility.js';
 import mediator from './patterns/behavioral/mediator.js';
+import command from './patterns/behavioral/mediator.js';
 
 var patterns = {
   singleton,
   factory,
   publishSubscribe,
   chainOfResponsibility,
-  mediator
+  mediator,
+  command
 };
 
 export default patterns;
