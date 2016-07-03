@@ -1,8 +1,7 @@
 import extend from "./extend.js";
 
 export default function buildPattern(getPattern) {
-  return function (options) {
-    options = options || {};
+  return function (options={}) {
     options = extend({
       constructor: function () {},
       publics: {},
