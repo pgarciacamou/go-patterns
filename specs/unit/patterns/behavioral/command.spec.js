@@ -23,7 +23,7 @@ describe('command', function() {
   describe('Advanced Level: Undo Redo', function() {
     var IUndoRedo;
     var implementsInterface;
-    var overload;
+    var chain;
     var UndoManager;
     var undoManager;
     var PointInTime;
@@ -41,7 +41,7 @@ describe('command', function() {
       implementsInterface = (i, o) => {
         return i.map(_ => o[_] instanceof Function).reduce((a, b) => a && b);
       };
-      overload = (...args) => {
+      chain = (...args) => {
         var Chain = chainOfResponsibility().build();
         var overloader = new Chain();
         args.forEach(overloader.add.bind(overloader));
@@ -53,7 +53,7 @@ describe('command', function() {
           this.methods = {};
           this.pit = new PointInTime();
           var execute = this.execute.bind(this);
-          this.execute = overload(
+          this.execute = chain(
             (_, ...args) => { execute(...args); },
             this._onExecute.bind(this)
           );
