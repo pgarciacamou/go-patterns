@@ -5,6 +5,7 @@ import chainOfResponsibility from './patterns/behavioral/chainOfResponsibility.j
 import mediator from './patterns/behavioral/mediator.js';
 import command from './patterns/behavioral/command.js';
 import memento from './patterns/behavioral/memento.js';
+import flyweight from './patterns/structural/flyweight.js';
 
 var patterns = {
   singleton,
@@ -13,7 +14,8 @@ var patterns = {
   chainOfResponsibility,
   mediator,
   command,
-  memento
+  memento,
+  flyweight
 };
 
 export default patterns;
