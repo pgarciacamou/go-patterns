@@ -71,4 +71,61 @@ describe('flyweight', function() {
       expect(factorialMemoizationFlyweight.factorial).not.toHaveBeenCalled();
     });
   });
+
+  describe('Advanced Level: Object Creation', function() {
+    var LightObjectCreation;
+    var lightObjectCreation;
+    var withParams;
+    beforeEach(function() {
+      // HELPER METHODS
+      withParams = (fn, ...params) => {
+        return (...args) => {
+          console.log(params);
+          return fn.apply(null, params.concat(args));
+        };
+      };
+    });
+    beforeEach(function() {
+      LightObjectCreation = flyweight({
+        constructor() {
+          // this overrides the default object.
+          this.flyweights = [];
+        },
+        publics: {
+          heuristic(params) {
+            return this.find(params) || this.construct(params);
+          },
+          construct(params) {
+            var heavyObject = { data:params.data };
+            this.flyweights.push(heavyObject);
+            return heavyObject;
+          },
+          find(params) {
+            var i = 0;
+            var length = this.flyweights.length;
+            for(var i = 0; i < length; i++) {
+              if(this.flyweights[i].data === params.data) {
+                return this.flyweights[i];
+              }
+            }
+            return undefined;
+          }
+        }
+      }).build();
+
+      lightObjectCreation = new LightObjectCreation();
+
+      spyOn(lightObjectCreation, "construct").and.callThrough();
+
+      lightObjectCreation.create({
+        data: 13.01 // dummy specific data
+      });
+      lightObjectCreation.create({
+        data: 13.01 // dummy specific data
+      });
+    });
+    it('should only construct the object only once.', function() {
+      expect(lightObjectCreation.construct).toHaveBeenCalledTimes(1);
+    });
+  });
 });
