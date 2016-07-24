@@ -12,10 +12,14 @@
     "url": "git+https://github.com/pgarciacamou/patterns.git"
   },
   "keywords": [
-    "Design",
-    "Patterns",
-    "Pattern",
-    "Generator"
+    "design",
+    "patterns",
+    "pattern",
+    "generator",
+    "patternity",
+    "patternify",
+    "protopattern",
+    "patternizer"
   ],
   "author": "Pablo Garcia",
   "license": "MIT",
