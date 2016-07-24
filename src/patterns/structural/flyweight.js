@@ -9,7 +9,7 @@ export default buildPattern(options => {
   }
   extend(Flyweight.prototype, {
     create(...args) {
-      return this.heuristic(this.flyweights, ...args);
+      return this.heuristic(...args);
     },
     heuristic() {
       throw new Error("Flyweight is missing heuristic public method.");
