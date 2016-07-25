@@ -4,10 +4,23 @@ describe('architectural: mvp', function() {
   var model;
   var view;
   var presenter;
+  var init;
   beforeEach(function() {
     model = Model().build();
     view = View().build();
     presenter = Presenter().build();
+
+    presenter.model = model; // ???
+    init = {
+      test: "testing"
+    };
+
+    // XHR
+    model.update(init);
+
+
+
+
 
 
     model.update("test", 3); // is this MVVM ???

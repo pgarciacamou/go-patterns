@@ -10,7 +10,9 @@ const View = buildPattern(options => {
   return View;
 });
 const Presenter = buildPattern(options => {
-  function Presenter() {}
+  function Presenter(model, view, ...args) {
+    options.constructor.apply(this, args);
+  }
   return Presenter;
 });
 
