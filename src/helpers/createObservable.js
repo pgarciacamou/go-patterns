@@ -4,17 +4,15 @@ export default function createObservable(obj, callback) {
   var isFinalized = false;
   for(let prop in obj) {
     Object.defineProperty(getset, prop, {
-      get: function() {
-        return values[prop];
-      },
-      set: function(val) {
-        if(val === values[prop]) {
-          return val;
+      get: _ => values[prop],
+      set: newValue => {
+        if(newValue === values[prop]) {
+          return values[prop];
         }
         if(isFinalized) {
-          callback(prop, val, values[prop]);
+          callback(prop, newValue, values[prop]);
         }
-        return values[prop] = val;
+        return values[prop] = newValue;
       }
     });
     getset[prop] = obj[prop];
