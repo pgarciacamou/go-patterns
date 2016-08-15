@@ -1,6 +1,6 @@
 {
   "name": "patterns",
-  "version": "0.0.0",
+  "version": "v0.7.0-beta",
   "description": "JavaScript Design Pattern Generator",
   "main": "src/index.js",
   "scripts": {
