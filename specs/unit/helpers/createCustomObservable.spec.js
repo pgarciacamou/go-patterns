@@ -1,14 +1,15 @@
-import createObservable from "../../../src/helpers/createObservable.js";
+import createCustomObservable from "../../../src/helpers/createCustomObservable.js";
 
-describe('createObservable helper', function() {
+describe('createCustomObservable helper', function() {
   var observable;
   var callback;
   beforeEach(function() {
     callback = jasmine.createSpy("observable updated");
-    observable = createObservable({
+    observable = createCustomObservable({
       test1: "testing1",
       test2: "testing2"
-    }, callback);
+    });
+    observable.__pipeline.pipe(callback);
   });
   it('should not update on initial values', function() {
     expect(callback).not.toHaveBeenCalled();
@@ -42,6 +43,6 @@ describe('createObservable helper', function() {
     var newvalue = "newvalue"
     var oldvalue = observable.test1;
     observable.test1 = newvalue;
-    expect(callback).toHaveBeenCalledWith("test1", newvalue, oldvalue);
+    expect(callback).toHaveBeenCalledWith(["test1", newvalue, oldvalue]);
   });
 });
