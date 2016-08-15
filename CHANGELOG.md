@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Introduced CHANGELOG.md into project.
+- Introduced MVW patterns.
+- New dependency pipeline.js
 
 ### Fixed
 - Library had dependencies listed but are only used for development.
@@ -14,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Source and distribution files were renamed from index/bundle to library name.
 - Unit tests are now testing the library's root index.js file instead of an inner file.
+- Refactored createCustomObservable
 
 ## [v1.0.1](https://github.com/pgarciacamou/go-patterns/releases/tag/v1.0.1) - 2017-04-04
 ### Fixed
