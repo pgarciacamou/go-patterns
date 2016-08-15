@@ -54,6 +54,7 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "pipe": "git+https://github.com/pgarciacamou/pipeline.git#master",
     "promise-polyfill": "6.0.1"
   }
 }
