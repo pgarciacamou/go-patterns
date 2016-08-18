@@ -1,4 +1,4 @@
-import pipe from "../../vendor/pipeline/pipeline.js";
+var pipe = require("pipeline");
 
 export default function createCustomObservable(obj) {
   var __pipeline = pipe();
