@@ -2,7 +2,7 @@
   "name": "go-patterns",
   "version": "1.0.1",
   "description": "JavaScript Design Pattern Generator",
-  "main": "src/index.js",
+  "main": "dist/patterns.module.js",
   "scripts": {
     "build": "cp -a ./node_modules/pipeline/src/. ./vendor/pipeline/",
     "prepush": "npm run lint",
