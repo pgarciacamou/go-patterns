@@ -4,9 +4,8 @@
   "description": "JavaScript Design Pattern Generator",
   "main": "src/index.js",
   "scripts": {
-    "build": "cp -a ./node_modules/pipeline/src/. ./vendor/pipeline/",
-    "dist": "npm run build && ./node_modules/browserify/bin/cmd.js ./src/index.js -o ./dist/bundle.js -t [ babelify --presets [ es2015 ] ]",
-    "test": "npm run build && ./node_modules/karma/bin/karma start"
+    "dist": "./node_modules/browserify/bin/cmd.js ./src/index.js -o ./dist/bundle.js -t [ babelify --presets [ es2015 ] ]",
+    "test": "./node_modules/karma/bin/karma start"
   },
   "repository": {
     "type": "git",
