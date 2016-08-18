@@ -2,7 +2,7 @@
   "name": "patterns",
   "version": "v0.7.0-beta",
   "description": "JavaScript Design Pattern Generator",
-  "main": "src/index.js",
+  "main": "dist/patterns.module.js",
   "scripts": {
     "dist": "./build.sh",
     "test": "./node_modules/karma/bin/karma start"
