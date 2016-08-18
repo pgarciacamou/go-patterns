@@ -4,7 +4,7 @@
   "description": "JavaScript Design Pattern Generator",
   "main": "src/index.js",
   "scripts": {
-    "dist": "./node_modules/browserify/bin/cmd.js ./src/index.js -o ./dist/bundle.js -t [ babelify --presets [ es2015 ] ]",
+    "dist": "./build.sh",
     "test": "./node_modules/karma/bin/karma start"
   },
   "repository": {
@@ -37,6 +37,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.1",
     "phantomjs-prebuilt": "^2.1.7",
+    "uglifyjs": "^2.4.10",
     "watchify": "^3.7.0"
   },
   "dependencies": {
