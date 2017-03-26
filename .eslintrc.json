@@ -53,7 +53,7 @@
     "curly": ["error", "multi-line", "consistent"],
     "babel/new-cap": 1,
     "babel/object-curly-spacing": 1,
-    "babel/no-await-in-loop": 1,
+    "no-await-in-loop": 1,
     "flowtype/object-type-delimiter": 1,
     "babel/no-invalid-this": 1,
     "babel/object-curly-spacing": 0,
