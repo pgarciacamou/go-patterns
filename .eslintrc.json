@@ -1,0 +1,66 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    },
+    "sourceType": "module"
+  },
+  "plugins": [
+    "babel",
+    "async-await",
+    "async",
+    "flowtype"
+  ],
+  "rules": {
+    "strict": 0,
+    "indent": ["error", 2, {"SwitchCase": 1}],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "space-in-parens": ["error", "never"],
+    "space-before-function-paren": ["error", {
+      "anonymous": "never",
+      "named": "never",
+      "asyncArrow": "ignore"
+    }],
+    "space-before-blocks": ["error", {
+      "functions": "always",
+      "keywords": "always",
+      "classes": "always"
+    }],
+    "keyword-spacing": ["error", {
+      "before": true,
+      "after": true,
+      "overrides": {
+        "if": { "after": false },
+        "for": { "after": false },
+        "while": { "after": false },
+        "switch": { "after": false }
+      }
+    }],
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "comma-dangle": ["error", "never"],
+    "space-infix-ops": ["error", {"int32Hint": false}],
+    "no-trailing-spaces": "error",
+    "no-undef": 2,
+    "no-console": 2,
+    "curly": ["error", "multi-line", "consistent"],
+    "babel/new-cap": 1,
+    "babel/object-curly-spacing": 1,
+    "babel/no-await-in-loop": 1,
+    "flowtype/object-type-delimiter": 1,
+    "babel/no-invalid-this": 1,
+    "babel/object-curly-spacing": 0,
+    "babel/new-cap": ["error", { "capIsNewExceptions": ["TODO"] }],
+    "async-await/space-after-async": 2,
+    "async-await/space-after-await": 2,
+    "async/missing-await-in-async-fn": 1,
+    "eol-last": ["error", "always"]
+  }
+}
