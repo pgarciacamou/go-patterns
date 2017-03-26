@@ -1,7 +1,7 @@
 import createCustomObservable from "../../../src/helpers/createCustomObservable.js";
 import { skip } from "pipeline";
 
-describe('createCustomObservable helper', function() {
+fdescribe('createCustomObservable helper', function() {
   var observable;
   var callback;
   beforeEach(function() {
@@ -45,5 +45,17 @@ describe('createCustomObservable helper', function() {
     var oldvalue = observable.test1;
     observable.test1 = newvalue;
     expect(callback).toHaveBeenCalledWith(["test1", newvalue, oldvalue]);
+  });
+  fit('shouldn\'t detect a change in an Array', function() {
+    var obs = createCustomObservable({
+      arr: []
+    });
+    obs.__pipeline
+    .pipe((...args) => {
+      console.log(...args);
+    });
+
+    obs.arr = (obs.arr).push(1);
+
   });
 });
