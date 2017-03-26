@@ -4,6 +4,8 @@
   "description": "JavaScript Design Pattern Generator",
   "main": "index.js",
   "scripts": {
+    "prepush": "npm run lint",
+    "precommit": "npm run lint",
     "dist": "./node_modules/browserify/bin/cmd.js ./src/index.js -o ./dist/bundle.js -t [ babelify --presets [ es2015 ] ]",
     "test": "./node_modules/karma/bin/karma start",
     "lint": "./node_modules/.bin/eslint src/**",
