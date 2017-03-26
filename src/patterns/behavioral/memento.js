@@ -1,6 +1,5 @@
 import extend from '../../helpers/extend.js';
 import createPatternBuilder from '../../helpers/createPatternBuilder.js';
-// a intermediary library 'json' is used to ease testing.
 import json from '../../helpers/json.js';
 
 export default createPatternBuilder(options => {
