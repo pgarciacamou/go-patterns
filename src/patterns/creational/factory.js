@@ -1,5 +1,5 @@
-import extend from "../../helpers/extend.js";
-import buildPattern from "../../helpers/buildPattern.js";
+import extend from '../../helpers/extend.js';
+import buildPattern from '../../helpers/buildPattern.js';
 
 export default buildPattern(options => {
   function Factory(...args) {
@@ -10,7 +10,7 @@ export default buildPattern(options => {
   extend(Factory.prototype, {
     add(className, __class) {
       if(this.__classes[className] !== undefined) {
-        throw new Error("class is already defined in factory");
+        throw new Error('class is already defined in factory');
       }
       this.__classes[className] = __class;
       return this;
@@ -18,7 +18,7 @@ export default buildPattern(options => {
 
     create(className, ...args) {
       if(this.__classes[className] === undefined) {
-        throw new Error("class is not defined in factory");
+        throw new Error('class is not defined in factory');
       }
       return new this.__classes[className](...args);
     }

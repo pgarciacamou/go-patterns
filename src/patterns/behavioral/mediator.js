@@ -9,7 +9,7 @@ export default buildPattern(options => {
   extend(Mediator.prototype, {
     register(alias, callback) {
       if(this.participants[alias] !== undefined) {
-        throw new Error("participant already exists");
+        throw new Error('participant already exists');
       }
       this.participants[alias] = callback;
       return this;
@@ -24,15 +24,15 @@ export default buildPattern(options => {
     },
 
     broadcast(message, from) {
-      for(var prop in this.participants){
-        if(this.participants.hasOwnProperty(prop)){
+      for(var prop in this.participants) {
+        if(this.participants.hasOwnProperty(prop)) {
           this.participants[prop](message, from);
         }
       }
       return this;
     },
 
-    count(){
+    count() {
       return Object.keys(this.participants).length;
     }
   });

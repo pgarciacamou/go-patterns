@@ -17,9 +17,9 @@ export default buildPattern(options => {
     },
 
     run(...args) {
-      for (var i = 0; i < this.chain.length; i++) {
+      for(var i = 0; i < this.chain.length; i++) {
         let next = false;
-        let val = this.chain[i].apply(null, [_ => {
+        let val = this.chain[i].apply(null, [() => {
           next = true;
         }].concat(args));
         if(!next) {

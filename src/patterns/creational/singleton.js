@@ -1,9 +1,9 @@
-import extend from "../../helpers/extend.js";
-import buildPattern from "../../helpers/buildPattern.js";
+import extend from '../../helpers/extend.js';
+import buildPattern from '../../helpers/buildPattern.js';
 
 export default buildPattern(options => {
   var instance;
-  
+
   function Singleton(...args) {
     if(instance !== undefined) { return instance; }
     options.constructor.apply(this, args);
@@ -14,7 +14,7 @@ export default buildPattern(options => {
     destroy() {
       instance = undefined;
     }
-  })
+  });
 
   return Singleton;
 });
