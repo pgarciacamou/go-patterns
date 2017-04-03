@@ -26,10 +26,15 @@ function MySingletonConstructor() {
   this.test = 'testing';
 }
 
-var Singleton = patterns.singleton({
-  constructor: MySingletonConstructor
-}).build();
+let options = {
+  constructor: MySingletonConstructor,
+  // NOTE: you can add public and static methods like:
+  publics: {}, // will be attached to the prototype
+  statics: {}  // will be attached to the constructor
+};
 
+// Note: the options object is completely optional.
+var Singleton = patterns.singleton(options).build();
 var singleton1 = new Singleton();
 var singleton2 = new Singleton();
 
@@ -38,3 +43,66 @@ console.log(singleton1 === singleton2); // true
 console.log(singleton2 instanceof Singleton); // true
 console.log(singleton2 instanceof MySingletonConstructor); // true
 ```
+
+### How To Add A New Pattern
+
+To add new patterns to this library, take a look at previously created patterns. I use a helper called `createPatternBuilder` which is in charge of 95% of the dynamic inheritance, the other 5% needs to be taken care within the pattern.
+
+`createPatternBuilder` takes in a function that needs to return the pattern's constructor. With this, `createPatternBuilder` will then return a "_builder_" object which will either extend the pattern's constructor when the pattern is built, or use to wrap around other patterns. This is the core functionality of this library and it is exactly why the patterns need to be abstracted to work with this.
+
+For example, let's create a pattern that for some reason returns a random unrepeated integer from 0 to 100, but this pattern can be extended to also update those limits:
+
+```js
+// Pattern Definition
+let unrepeatedNumbersBuilder = createPatternBuilder(options => {
+  function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
+
+  function UnrepeatedNumbers(...args) {
+    options.constructor.apply(this, args);
+    this._prevNumbers = [];
+    for(let lB = this.lowerBound, uB = this.upperBound; lB <= uB; lB++) {
+      this._prevNumbers.push(lB);
+    }
+  }
+
+  extend(UnrepeatedNumbers.prototype, {
+    lowerBound: 0,
+    upperBound: 100,
+    genNumber() {
+      if(this._prevNumbers.length === 0) {
+        return null;
+      }
+
+      let index = randomIntFromInterval(0, this._prevNumbers.length - 1);
+      return this._prevNumbers.splice(index, 1)[0];
+    }
+  });
+
+  return UnrepeatedNumbers;
+});
+
+// How to build the pattern.
+let UnrepeatedNumbers = unrepeatedNumbersBuilder({
+  // We can also see how to extend it.
+  constructor: function(lowerBound=this.lowerBound, upperBound=this.upperBound) {
+    this.lowerBound = lowerBound;
+    this.upperBound = upperBound;
+  }
+}).build();
+
+// How to use it:
+let A = new UnrepeatedNumbers(2, 5);
+let B = new UnrepeatedNumbers();
+
+console.log(A.genNumber()); // unrepeated random number #1
+console.log(A.genNumber()); // unrepeated random number #2
+console.log(A.genNumber()); // unrepeated random number #3
+console.log(A.genNumber()); // unrepeated random number #4
+console.log(A.genNumber()); // null (out of numbers)
+
+console.log(B.genNumber()); // unrepeated random number from 0 to 100
+```
+
+NOTE: Don't forget to add the respective unit tests for quality purposes.
