@@ -1,5 +1,5 @@
-import factory from "../../../../src/patterns/creational/factory.js";
-import singleton from "../../../../src/patterns/creational/singleton.js";
+import factoryBuilder from "../../../../src/patterns/creational/factory.js";
+import singletonBuilder from "../../../../src/patterns/creational/singleton.js";
 
 describe('Factory', function() {
   var Car;
@@ -18,7 +18,7 @@ describe('Factory', function() {
         this.year = year;
       }
     };
-    CarFactory = factory({
+    CarFactory = factoryBuilder({
       constructor(name) {
         this._name = name;
       },
@@ -68,7 +68,7 @@ describe('Factory', function() {
       Constructor = function (arg) {
         this.param = arg;
       }
-      SingletonFactory = singleton(factory({
+      SingletonFactory = singletonBuilder(factoryBuilder({
         constructor: Constructor
       })).build();
       singletonFactory = new SingletonFactory("test");
@@ -86,7 +86,7 @@ describe('Factory', function() {
     var factoryOfFactories;
     var Factory;
     var SingletonFactory;
-    var _factory;
+    var factory;
     var singletonFactory;
     var factorySpy;
     var singletonSpy;
@@ -94,15 +94,15 @@ describe('Factory', function() {
     beforeEach(function() {
       factorySpy = jasmine.createSpy("factorySpy");
       singletonSpy = jasmine.createSpy("singletonSpy");
-      FactoryOfFactories = factory({
+      FactoryOfFactories = factoryBuilder({
         constructor(a) {},
         publics: {},
         statics: {}
       }).build();
-      Factory = factory({
+      Factory = factoryBuilder({
         constructor: factorySpy
       }).build();
-      SingletonFactory = singleton(factory({
+      SingletonFactory = singletonBuilder(factoryBuilder({
         constructor: singletonSpy
       })).build();
 
@@ -110,15 +110,15 @@ describe('Factory', function() {
       factoryOfFactories.add("factory", Factory);
       factoryOfFactories.add("singleton", SingletonFactory);
 
-      _factory = factoryOfFactories.create("factory");
+      factory = factoryOfFactories.create("factory");
       singletonFactory = factoryOfFactories.create("singleton");
     });
     it('should have created a Factory', function() {
-      expect(_factory).toBeDefined();
+      expect(factory).toBeDefined();
       expect(factorySpy).toHaveBeenCalledTimes(1);
     });
     it('should have created a SingletonFactory', function() {
-      expect(singleton).toBeDefined();
+      expect(singletonBuilder).toBeDefined();
       expect(singletonSpy).toHaveBeenCalledTimes(1);
       factoryOfFactories.create("singleton");
       expect(singletonSpy).toHaveBeenCalledTimes(1);

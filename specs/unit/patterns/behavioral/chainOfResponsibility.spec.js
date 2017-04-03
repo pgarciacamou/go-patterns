@@ -1,4 +1,4 @@
-import chainOfResponsibility from "../../../../src/patterns/behavioral/chainOfResponsibility.js";
+import chainOfResponsibilityBuilder from "../../../../src/patterns/behavioral/chainOfResponsibility.js";
 
 describe('chain of responsibility', function() {
   var arraySpy;
@@ -6,8 +6,8 @@ describe('chain of responsibility', function() {
   var constructorSpy;
   var shouldNotRunSpy;
   var defaultSpy;
-  var Pattern;
-  var patternImplementation;
+  var ChainOfResponsibility;
+  var chainOfResponsibility;
   var chain;
   beforeEach(function() {
     constructorSpy = jasmine.createSpy("constructor");
@@ -15,7 +15,7 @@ describe('chain of responsibility', function() {
     functionSpy = jasmine.createSpy("object");
     shouldNotRunSpy = jasmine.createSpy("shouldNotRun");
     defaultSpy = jasmine.createSpy("default");
-    Pattern = chainOfResponsibility({
+    ChainOfResponsibility = chainOfResponsibilityBuilder({
       constructor: _ => {
         constructorSpy();
       },
@@ -23,8 +23,8 @@ describe('chain of responsibility', function() {
         test: "test"
       }
     });
-    patternImplementation = Pattern.build();
-    chain = new patternImplementation()
+    chainOfResponsibility = ChainOfResponsibility.build();
+    chain = new chainOfResponsibility()
     .add(defaultSpy)
     .add((next, t) => {
       if(t instanceof Array) {

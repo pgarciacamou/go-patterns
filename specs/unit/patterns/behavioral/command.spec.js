@@ -1,19 +1,19 @@
-import command from "../../../../src/patterns/behavioral/command.js";
-import chainOfResponsibility from "../../../../src/patterns/behavioral/chainOfResponsibility.js";
+import commandBuilder from "../../../../src/patterns/behavioral/command.js";
+import chainOfResponsibilityBuilder from "../../../../src/patterns/behavioral/chainOfResponsibility.js";
 
 describe('command', function() {
   var someMethodSpy;
-  var Pattern;
-  var patternImplementation;
+  var Command;
+  var command;
   beforeEach(function() {
     someMethodSpy = jasmine.createSpy("someMethod");
-    Pattern = command({
+    Command = commandBuilder({
       publics: {
         someMethod: someMethodSpy
       }
     }).build();
-    patternImplementation = new Pattern();
-    patternImplementation.execute("someMethod", "test");
+    command = new Command();
+    command.execute("someMethod", "test");
   });
 
   it('should execute a command', function() {
@@ -42,13 +42,13 @@ describe('command', function() {
         return i.map(_ => o[_] instanceof Function).reduce((a, b) => a && b);
       };
       chain = (...args) => {
-        var Chain = chainOfResponsibility().build();
+        var Chain = chainOfResponsibilityBuilder().build();
         var overloader = new Chain();
         args.forEach(overloader.add.bind(overloader));
         return overloader.run;
       };
 
-      UndoManager = command({
+      UndoManager = commandBuilder({
         constructor() {
           this.methods = {};
           this.pit = new PointInTime();

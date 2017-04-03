@@ -1,19 +1,19 @@
-import mediator from "../../../../src/patterns/behavioral/mediator.js";
+import mediatorBuilder from "../../../../src/patterns/behavioral/mediator.js";
 
 describe('mediator', function() {
   var participantA;
   var participantB;
   var participantC;
   var constructor;
-  var Pattern;
-  var patternImplementation;
+  var Mediator;
+  var mediator;
 
   beforeEach(function() {
     participantA = jasmine.createSpy("A");
     participantB = jasmine.createSpy("B");
     participantC = jasmine.createSpy("B");
     constructor = jasmine.createSpy("constructor");
-    Pattern = mediator({
+    Mediator = mediatorBuilder({
       constructor: function (...args) {
         constructor(...args);
       },
@@ -21,28 +21,28 @@ describe('mediator', function() {
         test: "testing"
       }
     }).build();
-    patternImplementation = new Pattern("test");
-    patternImplementation.register("participantA", participantA);
-    patternImplementation.register("participantB", participantB);
-    patternImplementation.send("testA", "participantB", "participantA");
-    patternImplementation.send("testB", "participantA", "participantB");
-    patternImplementation.broadcast("broadcast", "participantA");
-    patternImplementation.send("send broadcast", "participantA");
-    patternImplementation.send("anonymous", undefined, "participantA");
-    patternImplementation.send("send anonymous broadcast");
-    patternImplementation.broadcast("anonymous broadcast");
-    patternImplementation.send("lost", "participantA", "non-existant");
-    patternImplementation.register("non-existant", participantC);
+    mediator = new Mediator("test");
+    mediator.register("participantA", participantA);
+    mediator.register("participantB", participantB);
+    mediator.send("testA", "participantB", "participantA");
+    mediator.send("testB", "participantA", "participantB");
+    mediator.broadcast("broadcast", "participantA");
+    mediator.send("send broadcast", "participantA");
+    mediator.send("anonymous", undefined, "participantA");
+    mediator.send("send anonymous broadcast");
+    mediator.broadcast("anonymous broadcast");
+    mediator.send("lost", "participantA", "non-existant");
+    mediator.register("non-existant", participantC);
   });
   it('should wrap with pattern', function() {
     expect(constructor).toHaveBeenCalledWith("test");
-    expect(patternImplementation.test).toEqual("testing");
+    expect(mediator.test).toEqual("testing");
   });
   it('should create a mediator', function() {
-    expect(Pattern).toBeDefined();
+    expect(Mediator).toBeDefined();
   });
   it('should register participants', function() {
-    expect(patternImplementation.count()).toEqual(3);
+    expect(mediator.count()).toEqual(3);
   });
   it('should send messages', function() {
     expect(participantA).toHaveBeenCalledWith("testA", "participantB");

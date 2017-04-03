@@ -1,11 +1,11 @@
-import memento from "../../../../src/patterns/behavioral/memento.js";
-import command from "../../../../src/patterns/behavioral/command.js";
-import chainOfResponsibility from "../../../../src/patterns/behavioral/chainOfResponsibility.js";
+import mementoBuilder from "../../../../src/patterns/behavioral/memento.js";
+import commandBuilder from "../../../../src/patterns/behavioral/command.js";
+import chainOfResponsibilityBuilder from "../../../../src/patterns/behavioral/chainOfResponsibility.js";
 import json from "../../../../src/helpers/json.js";
 
 describe('memento', function() {
   var Pattern;
-  var patternImplementation;
+  var pattern;
   var history;
   var parsedHistory;
   var key;
@@ -15,10 +15,10 @@ describe('memento', function() {
     history = {
       test: "testing"
     };
-    Pattern = memento().build();
-    patternImplementation = new Pattern();
-    key = patternImplementation.add(history);
-    parsedHistory = patternImplementation.get(key);
+    Pattern = mementoBuilder().build();
+    pattern = new Pattern();
+    key = pattern.add(history);
+    parsedHistory = pattern.get(key);
   });
 
   it('should add an object', function() {
@@ -48,13 +48,13 @@ describe('memento', function() {
       };
 
       chain = (...args) => {
-        var Chain = chainOfResponsibility().build();
-        var overloader = new Chain();
+        var ChainOfResponsibility = chainOfResponsibilityBuilder().build();
+        var overloader = new ChainOfResponsibility();
         args.forEach(overloader.add.bind(overloader));
         return overloader.run;
       };
 
-      UndoManager = memento(command({
+      UndoManager = mementoBuilder(commandBuilder({
         constructor() {
           this.methods = {};
           this.state = {};

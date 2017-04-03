@@ -1,10 +1,10 @@
-import singleton from "../../../../src/patterns/creational/singleton.js";
+import singletonBuilder from "../../../../src/patterns/creational/singleton.js";
 
 describe('Singleton', function() {
   var executionTimes;
-  var SingletonClass;
-  var NormalClass;
-  var singletonInstance;
+  var Singleton;
+  var ParentClass;
+  var singleton;
   var executionSpy;
   beforeEach(function() {
     executionTimes = 0;
@@ -13,7 +13,7 @@ describe('Singleton', function() {
       executionSpy(param1);
     }
       
-    SingletonClass = singleton({
+    Singleton = singletonBuilder({
       constructor: _Class,
       publics: {
         publicMethod () {}
@@ -22,28 +22,28 @@ describe('Singleton', function() {
         staticMethod (argument) {}
       }
     }).build();
-    NormalClass = _Class;
-    singletonInstance = new SingletonClass("test");
+    ParentClass = _Class;
+    singleton = new Singleton("test");
   });
 
   it('should create a singleton', function() {
-    expect(new SingletonClass("test")).toEqual(singletonInstance);
+    expect(new Singleton("test")).toEqual(singleton);
     expect(executionSpy).toHaveBeenCalledWith("test");
     expect(executionSpy.calls.count()).toEqual(1);
   });
   it('should have access to static methods', function() {
-    expect(SingletonClass.staticMethod).toBeDefined();
+    expect(Singleton.staticMethod).toBeDefined();
   });
   it('should have access to public methods', function() {
-    expect(singletonInstance.publicMethod).toBeDefined();
+    expect(singleton.publicMethod).toBeDefined();
   });
   it('should use inheritance', function() {
-    expect(singletonInstance instanceof SingletonClass).toBeTruthy();
-    expect(singletonInstance instanceof NormalClass).toBeTruthy();
+    expect(singleton instanceof Singleton).toBeTruthy();
+    expect(singleton instanceof ParentClass).toBeTruthy();
   });
   it('can destroy the instance', function() {
-    singletonInstance.destroy();
-    new SingletonClass("test");
+    singleton.destroy();
+    new Singleton("test");
     expect(executionSpy.calls.count()).toEqual(2);
   });
 });
