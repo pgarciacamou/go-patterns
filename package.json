@@ -1,5 +1,5 @@
 {
-  "name": "patterns",
+  "name": "go-patterns",
   "version": "0.0.0",
   "description": "JavaScript Design Pattern Generator",
   "main": "index.js",
@@ -13,12 +13,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pgarciacamou/patterns.git"
+    "url": "git+https://github.com/pgarciacamou/go-patterns.git"
   },
   "keywords": [
     "design",
-    "patterns",
+    "go-patterns",
     "pattern",
+    "patterns",
     "generator",
     "patternity",
     "patternify",
@@ -28,9 +29,9 @@
   "author": "Pablo Garcia",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pgarciacamou/patterns/issues"
+    "url": "https://github.com/pgarciacamou/go-patterns/issues"
   },
-  "homepage": "https://github.com/pgarciacamou/patterns#readme",
+  "homepage": "https://github.com/pgarciacamou/go-patterns#readme",
   "devDependencies": {
     "babel-eslint": "^7.2.1",
     "babel-preset-es2015": "^6.9.0",
