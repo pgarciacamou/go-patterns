@@ -13,6 +13,17 @@ In order to get the patterns working correctly I was thoroughly guided by the bo
 
 I recommend using this library to quickly build code around design patterns but only as proof of concept (POC). Once the POC is finalized, I strongly suggest moving away from this library and add more robust pattern implementations, as they could be optimized/improved based on your project's requirements. Also, keep in mind that this library uses some techniques (e.g. dynamic inheritance) that are, most likely, considered bad practices as they could have side effects but, thanks to my experience working with JavaScript, I was able to work around them.
 
+### Installation
+
+1. `npm install --save go-patterns` on your project
+2. `import patterns from 'go-patterns';`
+
+### Development
+
+1. fork/clone repo
+2. install dependencies `npm install`
+3. run unit test suites `npm run test`
+
 ### How To Use
 
 NOTE: if you really need to see how to use a specific pattern, please check the unit tests in `specs/`. You can see more complex examples like patterns wrapped around patterns.
