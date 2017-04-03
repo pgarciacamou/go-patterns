@@ -1,34 +1,33 @@
-import singletonBuilder from "../../../../src/patterns/creational/singleton.js";
+/* globals expect, beforeEach, it, describe, jasmine */
+import singletonBuilder from '../../../../src/patterns/creational/singleton.js';
 
 describe('Singleton', function() {
-  var executionTimes;
   var Singleton;
   var ParentClass;
   var singleton;
   var executionSpy;
   beforeEach(function() {
-    executionTimes = 0;
-    executionSpy = jasmine.createSpy("executionSpy");
-    function _Class(param1){
+    executionSpy = jasmine.createSpy('executionSpy');
+    function _Class(param1) {
       executionSpy(param1);
     }
-      
+
     Singleton = singletonBuilder({
       constructor: _Class,
       publics: {
-        publicMethod () {}
+        publicMethod() {}
       },
       statics: {
-        staticMethod (argument) {}
+        staticMethod() {}
       }
     }).build();
     ParentClass = _Class;
-    singleton = new Singleton("test");
+    singleton = new Singleton('test');
   });
 
   it('should create a singleton', function() {
-    expect(new Singleton("test")).toEqual(singleton);
-    expect(executionSpy).toHaveBeenCalledWith("test");
+    expect(new Singleton('test')).toEqual(singleton);
+    expect(executionSpy).toHaveBeenCalledWith('test');
     expect(executionSpy.calls.count()).toEqual(1);
   });
   it('should have access to static methods', function() {
@@ -43,7 +42,7 @@ describe('Singleton', function() {
   });
   it('can destroy the instance', function() {
     singleton.destroy();
-    new Singleton("test");
+    new Singleton('test');
     expect(executionSpy.calls.count()).toEqual(2);
   });
 });

@@ -1,5 +1,6 @@
-import flyweightBuilder from "../../../../src/patterns/structural/flyweight.js";
-import singletonBuilder from "../../../../src/patterns/creational/singleton.js";
+/* globals expect, beforeEach, it, describe, spyOn */
+import flyweightBuilder from '../../../../src/patterns/structural/flyweight.js';
+import singletonBuilder from '../../../../src/patterns/creational/singleton.js';
 
 describe('flyweight', function() {
   var Flyweight;
@@ -16,7 +17,7 @@ describe('flyweight', function() {
     flyweight = new Flyweight();
   });
   it('should throw an error', function() {
-    expect(function () {
+    expect(function() {
       var Flyweight = flyweightBuilder().build();
       var flyweight = new Flyweight();
       flyweight.create();
@@ -46,11 +47,11 @@ describe('flyweight', function() {
     var factorialMemoizationFlyweight;
     var factorials;
     beforeEach(function() {
-      factorials = [2,3,4];
+      factorials = [2, 3, 4];
       FactorialMemoizationFlyweight = singletonBuilder(flyweightBuilder({
         publics: {
           heuristic(val) {
-            return this.flyweights[val+""] = this.flyweights[val] || this.factorial(val);
+            return this.flyweights[val + ''] = this.flyweights[val] || this.factorial(val);
           },
           factorial(val) {
             if(val <= 1) return 1;
@@ -66,7 +67,7 @@ describe('flyweight', function() {
     });
     it('should return memoized values', function() {
       // we spy on factorial method, AFTER the initial values were declared already.
-      spyOn(factorialMemoizationFlyweight, "factorial");
+      spyOn(factorialMemoizationFlyweight, 'factorial');
       factorials.forEach(factorialMemoizationFlyweight.create.bind(factorialMemoizationFlyweight));
       expect(factorialMemoizationFlyweight.factorial).not.toHaveBeenCalled();
     });
@@ -103,7 +104,7 @@ describe('flyweight', function() {
 
       lightObjectCreation = new LightObjectCreation();
 
-      spyOn(lightObjectCreation, "construct").and.callThrough();
+      spyOn(lightObjectCreation, 'construct').and.callThrough();
 
       lightObjectCreation.create({
         data: 13.01 // dummy specific data

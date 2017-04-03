@@ -1,7 +1,8 @@
-import mementoBuilder from "../../../../src/patterns/behavioral/memento.js";
-import commandBuilder from "../../../../src/patterns/behavioral/command.js";
-import chainOfResponsibilityBuilder from "../../../../src/patterns/behavioral/chainOfResponsibility.js";
-import json from "../../../../src/helpers/json.js";
+/* globals expect, beforeEach, it, describe, jasmine, spyOn */
+import mementoBuilder from '../../../../src/patterns/behavioral/memento.js';
+import commandBuilder from '../../../../src/patterns/behavioral/command.js';
+import chainOfResponsibilityBuilder from '../../../../src/patterns/behavioral/chainOfResponsibility.js';
+import json from '../../../../src/helpers/json.js';
 
 describe('memento', function() {
   var Pattern;
@@ -10,10 +11,10 @@ describe('memento', function() {
   var parsedHistory;
   var key;
   beforeEach(function() {
-    spyOn(json, "stringify").and.callThrough();
-    spyOn(json, "parse").and.callThrough();
+    spyOn(json, 'stringify').and.callThrough();
+    spyOn(json, 'parse').and.callThrough();
     history = {
-      test: "testing"
+      test: 'testing'
     };
     Pattern = mementoBuilder().build();
     pattern = new Pattern();
@@ -38,8 +39,6 @@ describe('memento', function() {
     var undoManager;
     var PointInTime;
     var runSpy;
-    var redoSpy;
-    var undoSpy;
     beforeEach(function() {
       PointInTime = function(index) {
         this.index = index;
@@ -63,8 +62,8 @@ describe('memento', function() {
           var execute = this.execute.bind(this);
           this.execute = chain(
             this._onExecute.bind(this),
-            (next, ...args) => { 
-              execute(...args); 
+            (next, ...args) => {
+              execute(...args);
               next();
             }
           );
@@ -75,7 +74,7 @@ describe('memento', function() {
               add(o);
             },
             (next, method, obj) => {
-              if(typeof method !== "string") {
+              if(typeof method !== 'string') {
                 return next();
               }
               this.methods[method] = obj;
@@ -84,8 +83,8 @@ describe('memento', function() {
         },
         publics: {
           _onExecute(next, _, ...args) {
-            if(_ !== "run") {
-              return this.execute.apply(null, ["run", _].concat(args));
+            if(_ !== 'run') {
+              return this.execute.apply(null, ['run', _].concat(args));
             }
             var o = new PointInTime(this.add(this.state));
             o.previous = this.pit;
@@ -116,24 +115,24 @@ describe('memento', function() {
       })).build();
       undoManager = new UndoManager();
 
-      runSpy = jasmine.createSpy("run");
-      undoManager.add("test", (state, arg) => {
+      runSpy = jasmine.createSpy('run');
+      undoManager.add('test', (state, arg) => {
         runSpy(arg);
         state.test = arg;
       });
-      undoManager.execute("test", "testing");
+      undoManager.execute('test', 'testing');
     });
     it('should run a method', function() {
-      expect(runSpy).toHaveBeenCalledWith("testing");
-      expect(undoManager.state.test).toEqual("testing");
+      expect(runSpy).toHaveBeenCalledWith('testing');
+      expect(undoManager.state.test).toEqual('testing');
     });
     it('should undo a method', function() {
       undoManager.undo();
-      expect(undoManager.state.test).not.toEqual("testing");
+      expect(undoManager.state.test).not.toEqual('testing');
     });
     it('should redo a method', function() {
       undoManager.redo();
-      expect(undoManager.state.test).toEqual("testing");
+      expect(undoManager.state.test).toEqual('testing');
     });
   });
 });

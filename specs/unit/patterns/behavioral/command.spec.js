@@ -1,23 +1,24 @@
-import commandBuilder from "../../../../src/patterns/behavioral/command.js";
-import chainOfResponsibilityBuilder from "../../../../src/patterns/behavioral/chainOfResponsibility.js";
+/* globals expect, beforeEach, it, describe, jasmine */
+import commandBuilder from '../../../../src/patterns/behavioral/command.js';
+import chainOfResponsibilityBuilder from '../../../../src/patterns/behavioral/chainOfResponsibility.js';
 
 describe('command', function() {
   var someMethodSpy;
   var Command;
   var command;
   beforeEach(function() {
-    someMethodSpy = jasmine.createSpy("someMethod");
+    someMethodSpy = jasmine.createSpy('someMethod');
     Command = commandBuilder({
       publics: {
         someMethod: someMethodSpy
       }
     }).build();
     command = new Command();
-    command.execute("someMethod", "test");
+    command.execute('someMethod', 'test');
   });
 
   it('should execute a command', function() {
-    expect(someMethodSpy).toHaveBeenCalledWith("test");
+    expect(someMethodSpy).toHaveBeenCalledWith('test');
   });
 
   describe('Advanced Level: Undo Redo', function() {
@@ -37,7 +38,7 @@ describe('command', function() {
         this.next = null;
       };
 
-      IUndoRedo = ["run", "undo", "redo"];
+      IUndoRedo = ['run', 'undo', 'redo'];
       implementsInterface = (i, o) => {
         return i.map(_ => o[_] instanceof Function).reduce((a, b) => a && b);
       };
@@ -60,8 +61,8 @@ describe('command', function() {
         },
         publics: {
           _onExecute(next, _, ...args) {
-            if(_ !== "run") {
-              return this.execute.apply(null, ["run", _].concat(args));
+            if(_ !== 'run') {
+              return this.execute.apply(null, ['run', _].concat(args));
             }
             var o = new PointInTime(args);
             o.previous = this.pit;
@@ -74,7 +75,7 @@ describe('command', function() {
           },
           add(method, obj) {
             if(!implementsInterface(IUndoRedo, obj)) {
-              throw new Error("does not implement IUndoRedo interface.");
+              throw new Error('does not implement IUndoRedo interface.');
             }
             this.methods[method] = obj;
           },
@@ -104,20 +105,20 @@ describe('command', function() {
       }).build();
       undoManager = new UndoManager();
 
-      runSpy = jasmine.createSpy("run");
-      redoSpy = jasmine.createSpy("redo");
-      undoSpy = jasmine.createSpy("undo");
-      undoManager.add("test", {
+      runSpy = jasmine.createSpy('run');
+      redoSpy = jasmine.createSpy('redo');
+      undoSpy = jasmine.createSpy('undo');
+      undoManager.add('test', {
         run: runSpy,
         redo: redoSpy,
         undo: undoSpy
       });
-      undoManager.execute("test", "testing");
+      undoManager.execute('test', 'testing');
       undoManager.undo();
       undoManager.redo();
     });
     it('should run a method', function() {
-      expect(runSpy).toHaveBeenCalledWith("testing");
+      expect(runSpy).toHaveBeenCalledWith('testing');
     });
     it('should undo a method', function() {
       expect(undoSpy).toHaveBeenCalled();

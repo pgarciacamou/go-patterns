@@ -8,8 +8,8 @@
     "precommit": "npm run lint",
     "dist": "./node_modules/browserify/bin/cmd.js ./src/index.js -o ./dist/bundle.js -t [ babelify --presets [ es2015 ] ]",
     "test": "./node_modules/karma/bin/karma start",
-    "lint": "./node_modules/.bin/eslint src/**",
-    "lintfix": "./node_modules/.bin/eslint src/** --fix"
+    "lint": "./node_modules/.bin/eslint src/** specs/**",
+    "lintfix": "./node_modules/.bin/eslint src/** specs/** --fix"
   },
   "repository": {
     "type": "git",

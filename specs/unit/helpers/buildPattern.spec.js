@@ -1,14 +1,14 @@
-import createPatternBuilder from "../../../src/helpers/createPatternBuilder.js";
+/* globals expect, it, describe, beforeEach */
+import createPatternBuilder from '../../../src/helpers/createPatternBuilder.js';
 
 describe('build pattern helper', function() {
   var pattern;
-  var options;
   var PatternBuilder;
   var PatternClass;
   var patternInstance;
   beforeEach(function() {
     pattern = createPatternBuilder(options => {
-      function Pattern(...args){
+      function Pattern(...args) {
         this.implementsPattern = true;
         options.constructor.apply(this, args);
       }
@@ -26,7 +26,7 @@ describe('build pattern helper', function() {
     patternInstance = new PatternClass(true);
   });
   it('should return a function', function() {
-    expect(typeof pattern).toEqual("function");
+    expect(typeof pattern).toEqual('function');
   });
   it('should return a builder object', function() {
     expect(PatternBuilder instanceof Object).toBeTruthy();

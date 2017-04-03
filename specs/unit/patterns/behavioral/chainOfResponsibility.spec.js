@@ -1,4 +1,5 @@
-import chainOfResponsibilityBuilder from "../../../../src/patterns/behavioral/chainOfResponsibility.js";
+/* globals expect, beforeEach, it, describe, jasmine */
+import chainOfResponsibilityBuilder from '../../../../src/patterns/behavioral/chainOfResponsibility.js';
 
 describe('chain of responsibility', function() {
   var arraySpy;
@@ -7,78 +8,76 @@ describe('chain of responsibility', function() {
   var shouldNotRunSpy;
   var defaultSpy;
   var ChainOfResponsibility;
-  var chainOfResponsibility;
   var chain;
   beforeEach(function() {
-    constructorSpy = jasmine.createSpy("constructor");
-    arraySpy = jasmine.createSpy("array");
-    functionSpy = jasmine.createSpy("object");
-    shouldNotRunSpy = jasmine.createSpy("shouldNotRun");
-    defaultSpy = jasmine.createSpy("default");
+    constructorSpy = jasmine.createSpy('constructor');
+    arraySpy = jasmine.createSpy('array');
+    functionSpy = jasmine.createSpy('object');
+    shouldNotRunSpy = jasmine.createSpy('shouldNotRun');
+    defaultSpy = jasmine.createSpy('default');
     ChainOfResponsibility = chainOfResponsibilityBuilder({
-      constructor: _ => {
+      constructor: () => {
         constructorSpy();
       },
       publics: {
-        test: "test"
+        test: 'test'
       }
-    });
-    chainOfResponsibility = ChainOfResponsibility.build();
-    chain = new chainOfResponsibility()
+    }).build();
+    chain = new ChainOfResponsibility()
     .add(defaultSpy)
     .add((next, t) => {
       if(t instanceof Array) {
         arraySpy();
-        return "array";
+        return 'array';
       }
       next();
     })
     .add((next, t) => {
       if(t instanceof Function) {
         shouldNotRunSpy();
-        return "shouldNotRun";
+        return 'shouldNotRun';
       }
       next();
     })
     .add((next, t) => {
       if(t instanceof Function) {
         functionSpy();
-        return "function";
+        return 'function';
       }
       next();
     })
     .add((next, t) => {
-      if(t === "continue") {
+      if(t === 'continue') {
         next();
-        return "shouldNotReturnThis";
+        return 'shouldNotReturnThis';
       }
       next();
     });
   });
   it('should wrap a constructor with the pattern', function() {
-    expect(chain.test).toEqual("test");
+    expect(chain.test).toEqual('test');
     expect(constructorSpy).toHaveBeenCalled();
   });
   it('should chain callbacks', function() {
     chain.run();
-    expect(chain.run([])).toEqual("array");
-    expect(chain.run(_ => {})).toEqual("function");
+    expect(chain.run([])).toEqual('array');
+    expect(chain.run(() => {})).toEqual('function');
     expect(defaultSpy).toHaveBeenCalled();
     expect(functionSpy).toHaveBeenCalled();
     expect(arraySpy).toHaveBeenCalled();
   });
   it('can shadow callbacks', function() {
-    expect(chain.run(_ => {})).not.toEqual("shouldNotRun");
+    expect(chain.run(() => {})).not.toEqual('shouldNotRun');
     expect(shouldNotRunSpy).not.toHaveBeenCalled();
   });
   it('can continue the chain even if callback was used', function() {
-    var t = chain.run("continue")
-    expect(t).not.toEqual("shouldNotReturnThis");
+    var t = chain.run('continue');
+    expect(t).not.toEqual('shouldNotReturnThis');
     expect(defaultSpy).toHaveBeenCalled();
   });
   it('should run regardless of the context allowing to pass as callback', function(done) {
     setTimeout(chain.run);
-    setTimeout(_ => {
+    setTimeout(() => {
       expect(defaultSpy).toHaveBeenCalled();
       done();
     }, 30);
@@ -88,6 +87,6 @@ describe('chain of responsibility', function() {
   });
   it('should find callbacks', function() {
     expect(chain.contains(defaultSpy)).toBeTruthy();
-    expect(chain.contains(_ => {})).toBeFalsy();
+    expect(chain.contains(() => {})).toBeFalsy();
   });
 });

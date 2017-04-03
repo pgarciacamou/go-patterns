@@ -1,4 +1,5 @@
-import json from "../../../src/helpers/json.js";
+/* globals expect, it, beforeEach, describe */
+import json from '../../../src/helpers/json.js';
 
 describe('json', function() {
   var obj;
@@ -6,7 +7,7 @@ describe('json', function() {
   var parsed;
   beforeEach(function() {
     obj = {
-      test: "testing"
+      test: 'testing'
     };
     stringified = json.stringify(obj);
     parsed = json.parse(stringified);
@@ -18,8 +19,6 @@ describe('json', function() {
     expect(obj).toEqual(parsed);
   });
   it('should throw an error on incorrect parsing', function() {
-    expect(_ => {
-      json.parse("");
-    }).toThrow();
+    expect(() => json.parse('')).toThrow();
   });
 });
