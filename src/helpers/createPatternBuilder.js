@@ -1,9 +1,9 @@
-import extend from "./extend.js";
+import extend from './extend.js';
 
-export default function buildPattern(getPattern) {
-  return function (options={}) {
+export default function createPatternBuilder(getPattern) {
+  return function(options = {}) {
     options = extend({
-      constructor: function () {},
+      constructor: () => {},
       publics: {},
       statics: {}
     }, options);
@@ -26,4 +26,4 @@ export default function buildPattern(getPattern) {
     };
 
   };
-};
+}

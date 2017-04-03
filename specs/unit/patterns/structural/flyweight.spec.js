@@ -1,11 +1,12 @@
-import flyweight from "../../../../src/patterns/structural/flyweight.js";
-import singleton from "../../../../src/patterns/creational/singleton.js";
+/* globals expect, beforeEach, it, describe, spyOn */
+import flyweightBuilder from '../../../../src/patterns/structural/flyweight.js';
+import singletonBuilder from '../../../../src/patterns/creational/singleton.js';
 
 describe('flyweight', function() {
   var Flyweight;
-  var flyweightInstance;
+  var flyweight;
   beforeEach(function() {
-    Flyweight = flyweight({
+    Flyweight = flyweightBuilder({
       publics: {
         heuristic(name, obj) {
           return this.flyweights[name] = this.flyweights[name] || obj;
@@ -13,27 +14,27 @@ describe('flyweight', function() {
       }
     }).build();
 
-    flyweightInstance = new Flyweight();
+    flyweight = new Flyweight();
   });
   it('should throw an error', function() {
-    expect(function () {
-      var TempFW = flyweight().build();
-      var tempFW = new TempFW();
-      tempFW.create();
+    expect(function() {
+      var Flyweight = flyweightBuilder().build();
+      var flyweight = new Flyweight();
+      flyweight.create();
     }).toThrowError('Flyweight is missing heuristic public method.');
   });
   it('should create a flyweight object', function() {
-    var test = flyweightInstance.create('test', {
+    var test = flyweight.create('test', {
       test: 'testing'
     });
     expect(test).toBeDefined();
     expect(test.test).toEqual('testing');
   });
   it('should return a previously created flyweight object', function() {
-    flyweightInstance.create('test', {
+    flyweight.create('test', {
       test: 'testing'
     });
-    var test = flyweightInstance.create('test', {
+    var test = flyweight.create('test', {
       test: 'already created'
     });
     expect(test).toBeDefined();
@@ -46,11 +47,11 @@ describe('flyweight', function() {
     var factorialMemoizationFlyweight;
     var factorials;
     beforeEach(function() {
-      factorials = [2,3,4];
-      FactorialMemoizationFlyweight = singleton(flyweight({
+      factorials = [2, 3, 4];
+      FactorialMemoizationFlyweight = singletonBuilder(flyweightBuilder({
         publics: {
           heuristic(val) {
-            return this.flyweights[val+""] = this.flyweights[val] || this.factorial(val);
+            return this.flyweights[val + ''] = this.flyweights[val] || this.factorial(val);
           },
           factorial(val) {
             if(val <= 1) return 1;
@@ -66,7 +67,7 @@ describe('flyweight', function() {
     });
     it('should return memoized values', function() {
       // we spy on factorial method, AFTER the initial values were declared already.
-      spyOn(factorialMemoizationFlyweight, "factorial");
+      spyOn(factorialMemoizationFlyweight, 'factorial');
       factorials.forEach(factorialMemoizationFlyweight.create.bind(factorialMemoizationFlyweight));
       expect(factorialMemoizationFlyweight.factorial).not.toHaveBeenCalled();
     });
@@ -75,18 +76,8 @@ describe('flyweight', function() {
   describe('Advanced Level: Object Creation', function() {
     var LightObjectCreation;
     var lightObjectCreation;
-    var withParams;
     beforeEach(function() {
-      // HELPER METHODS
-      withParams = (fn, ...params) => {
-        return (...args) => {
-          console.log(params);
-          return fn.apply(null, params.concat(args));
-        };
-      };
-    });
-    beforeEach(function() {
-      LightObjectCreation = flyweight({
+      LightObjectCreation = flyweightBuilder({
         constructor() {
           // this overrides the default object.
           this.flyweights = [];
@@ -101,21 +92,19 @@ describe('flyweight', function() {
             return heavyObject;
           },
           find(params) {
-            var i = 0;
-            var length = this.flyweights.length;
-            for(var i = 0; i < length; i++) {
+            for(var i = 0, l = this.flyweights.length; i < l; i++) {
               if(this.flyweights[i].data === params.data) {
                 return this.flyweights[i];
               }
             }
-            return undefined;
+            return null;
           }
         }
       }).build();
 
       lightObjectCreation = new LightObjectCreation();
 
-      spyOn(lightObjectCreation, "construct").and.callThrough();
+      spyOn(lightObjectCreation, 'construct').and.callThrough();
 
       lightObjectCreation.create({
         data: 13.01 // dummy specific data

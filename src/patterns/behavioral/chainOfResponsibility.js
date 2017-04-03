@@ -1,8 +1,8 @@
 import extend from '../../helpers/extend.js';
-import buildPattern from '../../helpers/buildPattern.js';
+import createPatternBuilder from '../../helpers/createPatternBuilder.js';
 
 
-export default buildPattern(options => {
+export default createPatternBuilder(options => {
   function ChainOfResponsibility(...args) {
     this.chain = [];
     this.run = this.run.bind(this);
@@ -17,9 +17,9 @@ export default buildPattern(options => {
     },
 
     run(...args) {
-      for (var i = 0; i < this.chain.length; i++) {
+      for(var i = 0; i < this.chain.length; i++) {
         let next = false;
-        let val = this.chain[i].apply(null, [_ => {
+        let val = this.chain[i].apply(null, [() => {
           next = true;
         }].concat(args));
         if(!next) {

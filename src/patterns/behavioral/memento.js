@@ -1,9 +1,8 @@
 import extend from '../../helpers/extend.js';
-import buildPattern from '../../helpers/buildPattern.js';
-// a intermediary library "json" is used to ease testing.
+import createPatternBuilder from '../../helpers/createPatternBuilder.js';
 import json from '../../helpers/json.js';
 
-export default buildPattern(options => {
+export default createPatternBuilder(options => {
   function Memento(...args) {
     this.mementos = [];
     options.constructor.apply(this, args);
@@ -13,7 +12,7 @@ export default buildPattern(options => {
       this.mementos.push(json.stringify(memento));
       return this.mementos.length - 1;
     },
-    
+
     get(index) {
       return json.parse(this.mementos[index]);
     }
