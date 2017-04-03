@@ -1,5 +1,5 @@
 export default (dest, ...srcs) => {
-  srcs.forEach(function (src) {
+  srcs.forEach((src) => {
     for(var prop in src) {
       if(src.hasOwnProperty(prop)) {
         dest[prop] = src[prop];

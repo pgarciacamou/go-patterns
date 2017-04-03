@@ -1,8 +1,7 @@
-import extend from "../../helpers/extend.js";
-import buildPattern from "../../helpers/buildPattern.js";
-import factory from "../creational/factory.js";
+import extend from '../../helpers/extend.js';
+import createPatternBuilder from '../../helpers/createPatternBuilder.js';
 
-export default buildPattern(options => {
+export default createPatternBuilder(options => {
   function Flyweight(...args) {
     this.flyweights = {};
     options.constructor.apply(this, args);
@@ -12,7 +11,7 @@ export default buildPattern(options => {
       return this.heuristic(...args);
     },
     heuristic() {
-      throw new Error("Flyweight is missing heuristic public method.");
+      throw new Error('Flyweight is missing heuristic public method.');
     }
   });
   return Flyweight;
