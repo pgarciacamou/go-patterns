@@ -24,6 +24,15 @@ I recommend using this library to quickly build code around design patterns but 
 2. install dependencies `npm install`
 3. run unit test suites `npm run test`
 
+### Deployment (Publish && Release)
+
+1. Login to NPM: `npm login`
+2. Increase library version: `npm version [major|minor|patch]`
+3. Upload new tag created on step 2: `git push origin <new tag>`
+4. Create distribution files `npm run dist`
+5. Create release in GitHub (attach dist/* files created in step 4)
+6. Publish: `npm publish`
+
 ### How To Use
 
 NOTE: if you really need to see how to use a specific pattern, please check the unit tests in `specs/`. You can see more complex examples like patterns wrapped around patterns.
