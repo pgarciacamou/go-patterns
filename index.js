@@ -1,3 +1,3 @@
-import patterns from './src/index.js';
+import patterns from './src/go-patterns.js';
 
 export default patterns;
