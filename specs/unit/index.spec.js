@@ -1,5 +1,5 @@
 /* globals expect, it, describe */
-import patterns from '../../src/index.js';
+import patterns from '../../index.js';
 
 describe('patterns API', function() {
   it('should describe an API', function() {
