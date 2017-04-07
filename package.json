@@ -6,9 +6,9 @@
   "scripts": {
     "prepush": "npm run lint",
     "precommit": "npm run lint",
-    "compile": "./node_modules/browserify/bin/cmd.js index.js -o dist/bundle.js -t [ babelify --presets [ es2015 ] ] -s patterns",
+    "compile": "./node_modules/browserify/bin/cmd.js index.js -o dist/go-patterns.js -t [ babelify --presets [ es2015 ] ] -s patterns",
     "dist": "mkdir -p dist && npm run compile && npm run uglify",
-    "uglify": "./node_modules/uglify-js/bin/uglifyjs --compress -o dist/bundle.min.js -- dist/bundle.js",
+    "uglify": "./node_modules/uglify-js/bin/uglifyjs --compress -o dist/go-patterns.min.js -- dist/go-patterns.js",
     "test": "./node_modules/karma/bin/karma start",
     "lint": "./node_modules/.bin/eslint src/** specs/**",
     "lintfix": "./node_modules/.bin/eslint src/** specs/** --fix"
