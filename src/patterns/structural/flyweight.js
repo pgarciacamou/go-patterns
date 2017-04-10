@@ -10,8 +10,8 @@ export default createPatternBuilder(options => {
     create(...args) {
       return this.heuristic(...args);
     },
-    heuristic() {
-      throw new Error('Flyweight is missing heuristic public method.');
+    heuristic(name, obj) {
+      return this.flyweights[name] = this.flyweights[name] || obj;
     }
   });
   return Flyweight;

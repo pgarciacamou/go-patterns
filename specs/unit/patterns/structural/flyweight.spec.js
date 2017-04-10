@@ -16,12 +16,19 @@ describe('flyweight', function() {
 
     flyweight = new Flyweight();
   });
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var Flyweight = flyweightBuilder(emptyOptions).build();
+    var flyweight = new Flyweight();
+    flyweight.create('test', {test: 'testing'});
+    expect(flyweight.flyweights['test'].test).toEqual('testing');
+  });
   it('should throw an error', function() {
     expect(function() {
       var Flyweight = flyweightBuilder().build();
       var flyweight = new Flyweight();
       flyweight.create();
-    }).toThrowError('Flyweight is missing heuristic public method.');
+    }).not.toThrowError('Flyweight is missing heuristic public method.');
   });
   it('should create a flyweight object', function() {
     var test = flyweight.create('test', {
@@ -87,7 +94,7 @@ describe('flyweight', function() {
             return this.find(params) || this.construct(params);
           },
           construct(params) {
-            var heavyObject = { data:params.data };
+            var heavyObject = {data: params.data};
             this.flyweights.push(heavyObject);
             return heavyObject;
           },
