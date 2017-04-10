@@ -39,6 +39,14 @@ describe('Factory', function() {
     civic = Honda.create('civic', 2016);
     corolla = Toyota.create('corolla', 2015);
   });
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var Factory = factoryBuilder(emptyOptions).build();
+    var factory = new Factory();
+    factory.add('product', (arg) => ({test: arg}));
+    var product = factory.create('product', 'testing');
+    expect(product.test).toEqual('testing');
+  });
   it('should create a Factory', function() {
     expect(CarFactory).toBeDefined();
     expect(Honda).toBeDefined();
@@ -59,7 +67,6 @@ describe('Factory', function() {
   it('should be able to define static properties/functionality', function() {
     expect(CarFactory.test).toBeDefined();
   });
-
   describe('Mid Level: Singleton Factory', function() {
     var SingletonFactory;
     var Constructor;
@@ -80,7 +87,6 @@ describe('Factory', function() {
       expect(singletonFactory.param).toEqual('test');
     });
   });
-
   describe('Advanced Level: Factory of factories', function() {
     var FactoryOfFactories;
     var factoryOfFactories;
