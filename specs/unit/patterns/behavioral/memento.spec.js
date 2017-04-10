@@ -21,6 +21,14 @@ describe('memento', function() {
     key = memento.add(history);
     parsedHistory = memento.get(key);
   });
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var Memento = mementoBuilder(emptyOptions).build();
+    var memento = new Memento();
+    var key = memento.add({test: 'testing'});
+    var result = memento.get(key);
+    expect(result.test).toEqual('testing');
+  });
   it('should add an object', function() {
     expect(key).toBeDefined();
     expect(key).toEqual(0);
