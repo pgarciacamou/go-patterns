@@ -16,11 +16,9 @@ describe('command', function() {
     command = new Command();
     command.execute('someMethod', 'test');
   });
-
   it('should execute a command', function() {
     expect(someMethodSpy).toHaveBeenCalledWith('test');
   });
-
   describe('Advanced Level: Undo Redo', function() {
     var IUndoRedo;
     var implementsInterface;
@@ -64,10 +62,10 @@ describe('command', function() {
             if(_ !== 'run') {
               return this.execute.apply(null, ['run', _].concat(args));
             }
-            var o = new PointInTime(args);
-            o.previous = this.pit;
-            this.pit.next = o;
-            this.pit = o;
+            var pit = new PointInTime(args);
+            pit.previous = this.pit;
+            this.pit.next = pit;
+            this.pit = pit;
             next();
           },
           run(method, ...args) {
@@ -126,6 +124,5 @@ describe('command', function() {
     it('should redo a method', function() {
       expect(redoSpy).toHaveBeenCalled();
     });
-
   });
 });
