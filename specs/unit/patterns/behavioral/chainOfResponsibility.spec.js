@@ -54,6 +54,15 @@ describe('chain of responsibility', function() {
       next();
     });
   });
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var ChainOfResponsibility = chainOfResponsibilityBuilder().build();
+    var chain = new ChainOfResponsibility(emptyOptions);
+    var result = chain.add((next, t) => {
+      return t;
+    }).run('test');
+    expect(result).toEqual('test');
+  });
   it('should wrap a constructor with the pattern', function() {
     expect(chain.test).toEqual('test');
     expect(constructorSpy).toHaveBeenCalled();
