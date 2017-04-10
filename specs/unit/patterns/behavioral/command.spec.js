@@ -15,6 +15,13 @@ describe('command', function() {
     command = new Command();
     command.execute('someMethod', 'test');
   });
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var Command = commandBuilder(emptyOptions).build();
+    var command = new Command();
+    var result = command.execute('test');
+    expect(result).toBeUndefined();
+  });
   it('should execute a command', function() {
     expect(someMethodSpy).toHaveBeenCalledWith('test');
   });
