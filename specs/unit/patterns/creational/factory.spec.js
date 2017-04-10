@@ -6,7 +6,6 @@ describe('Factory', function() {
   var CarFactory;
   var Honda, Civic, civic;
   var Toyota, Corolla, corolla;
-
   beforeEach(function() {
     Civic = class {
       constructor(year) {

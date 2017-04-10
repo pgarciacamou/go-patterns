@@ -8,7 +8,6 @@ describe('mediator', function() {
   var constructor;
   var Mediator;
   var mediator;
-
   beforeEach(function() {
     participantA = jasmine.createSpy('A');
     participantB = jasmine.createSpy('B');
