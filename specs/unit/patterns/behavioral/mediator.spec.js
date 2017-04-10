@@ -35,6 +35,16 @@ describe('mediator', function() {
     mediator.send('lost', 'participantA', 'non-existant');
     mediator.register('non-existant', participantC);
   });
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var Mediator = mediatorBuilder(emptyOptions).build();
+    var mediator = new Mediator();
+    mediator.register('from', (arg) => arg);
+    mediator.register('to', (message) => {
+      expect(message).toEqual('message');
+    });
+    mediator.send('message', 'from', 'to');
+  });
   it('should wrap with pattern', function() {
     expect(constructor).toHaveBeenCalledWith('test');
     expect(mediator.test).toEqual('testing');
