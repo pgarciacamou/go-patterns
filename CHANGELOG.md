@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Library had dependencies listed but are only used for development.
+- Flyweight now allows empty options as do the rest of the patterns.
 
 ### Changed
 - Source and distribution files were renamed from index/bundle to library name.

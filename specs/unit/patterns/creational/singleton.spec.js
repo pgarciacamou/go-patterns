@@ -24,7 +24,13 @@ describe('Singleton', function() {
     ParentClass = _Class;
     singleton = new Singleton('test');
   });
-
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var Singleton = singletonBuilder(emptyOptions).build();
+    var singleton = new Singleton();
+    singleton.test = 'testing';
+    expect((new Singleton()).test).toEqual('testing');
+  });
   it('should create a singleton', function() {
     expect(new Singleton('test')).toEqual(singleton);
     expect(executionSpy).toHaveBeenCalledWith('test');

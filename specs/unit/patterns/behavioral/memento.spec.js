@@ -5,8 +5,8 @@ import chainOfResponsibilityBuilder from '../../../../src/patterns/behavioral/ch
 import json from '../../../../src/helpers/json.js';
 
 describe('memento', function() {
-  var Pattern;
-  var pattern;
+  var Memento;
+  var memento;
   var history;
   var parsedHistory;
   var key;
@@ -16,12 +16,19 @@ describe('memento', function() {
     history = {
       test: 'testing'
     };
-    Pattern = mementoBuilder().build();
-    pattern = new Pattern();
-    key = pattern.add(history);
-    parsedHistory = pattern.get(key);
+    Memento = mementoBuilder().build();
+    memento = new Memento();
+    key = memento.add(history);
+    parsedHistory = memento.get(key);
   });
-
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var Memento = mementoBuilder(emptyOptions).build();
+    var memento = new Memento();
+    var key = memento.add({test: 'testing'});
+    var result = memento.get(key);
+    expect(result.test).toEqual('testing');
+  });
   it('should add an object', function() {
     expect(key).toBeDefined();
     expect(key).toEqual(0);
@@ -32,7 +39,6 @@ describe('memento', function() {
     expect(parsedHistory === history).not.toBeTruthy();
     expect(parsedHistory).toEqual(history);
   });
-
   describe('Advanced Level: Undo Redo using Memento, Command, and ChainOfResponsibility', function() {
     var chain;
     var UndoManager;

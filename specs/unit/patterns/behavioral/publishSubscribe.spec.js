@@ -14,6 +14,15 @@ describe('publish subscribe pattern', function() {
   afterEach(function() {
     publishSubscribe.unsubscribe('test', updateSpy);
   });
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var PublishSubscribe = publishSubscribeBuilder(emptyOptions).build();
+    var publishSubscribe = new PublishSubscribe();
+    publishSubscribe.subscribe('test', (arg) => {
+      expect(arg).toEqual('testing');
+    });
+    publishSubscribe.publish('test', 'testing')
+  });
   it('should create an publishSubscribe', function() {
     expect(publishSubscribe).toBeDefined();
   });

@@ -1,6 +1,5 @@
 /* globals expect, beforeEach, it, describe, jasmine */
 import commandBuilder from '../../../../src/patterns/behavioral/command.js';
-import chainOfResponsibilityBuilder from '../../../../src/patterns/behavioral/chainOfResponsibility.js';
 
 describe('command', function() {
   var someMethodSpy;
@@ -16,15 +15,19 @@ describe('command', function() {
     command = new Command();
     command.execute('someMethod', 'test');
   });
-
+  it('should allow empty options', function() {
+    var emptyOptions = undefined;
+    var Command = commandBuilder(emptyOptions).build();
+    var command = new Command();
+    var result = command.execute('test');
+    expect(result).toBeUndefined();
+  });
   it('should execute a command', function() {
     expect(someMethodSpy).toHaveBeenCalledWith('test');
   });
-
   describe('Advanced Level: Undo Redo', function() {
     var IUndoRedo;
     var implementsInterface;
-    var chain;
     var UndoManager;
     var undoManager;
     var PointInTime;
@@ -42,33 +45,26 @@ describe('command', function() {
       implementsInterface = (i, o) => {
         return i.map(_ => o[_] instanceof Function).reduce((a, b) => a && b);
       };
-      chain = (...args) => {
-        var Chain = chainOfResponsibilityBuilder().build();
-        var overloader = new Chain();
-        args.forEach(overloader.add.bind(overloader));
-        return overloader.run;
-      };
 
       UndoManager = commandBuilder({
         constructor() {
           this.methods = {};
           this.pit = new PointInTime();
           var execute = this.execute.bind(this);
-          this.execute = chain(
-            (_, ...args) => { execute(...args); },
-            this._onExecute.bind(this)
-          );
+          this.execute = (...args) => {
+            execute(...args);
+            this._onExecute(...args);
+          };
         },
         publics: {
-          _onExecute(next, _, ...args) {
+          _onExecute(_, ...args) {
             if(_ !== 'run') {
-              return this.execute.apply(null, ['run', _].concat(args));
+              return this.execute('run', _, ...args);
             }
-            var o = new PointInTime(args);
-            o.previous = this.pit;
-            this.pit.next = o;
-            this.pit = o;
-            next();
+            var pit = new PointInTime(args);
+            pit.previous = this.pit;
+            this.pit.next = pit;
+            this.pit = pit;
           },
           run(method, ...args) {
             return this.methods[method] && this.methods[method].run(...args);
@@ -126,6 +122,5 @@ describe('command', function() {
     it('should redo a method', function() {
       expect(redoSpy).toHaveBeenCalled();
     });
-
   });
 });
