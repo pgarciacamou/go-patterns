@@ -18,4 +18,4 @@ var patterns = {
   flyweight
 };
 
-export default patterns;
+module.exports = patterns;
