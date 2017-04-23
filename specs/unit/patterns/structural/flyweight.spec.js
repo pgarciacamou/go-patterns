@@ -1,6 +1,7 @@
 /* globals expect, beforeEach, it, describe, spyOn */
 import flyweightBuilder from '../../../../src/patterns/structural/flyweight.js';
 import singletonBuilder from '../../../../src/patterns/creational/singleton.js';
+import factoryBuilder from '../../../../src/patterns/creational/factory.js';
 
 describe('flyweight', function() {
   var Flyweight;
@@ -130,6 +131,106 @@ describe('flyweight', function() {
     });
     it('should only construct the object only once.', function() {
       expect(lightObjectCreation.construct).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Advanced Level: Book Store', function() {
+    var Book;
+    var BookFactory;
+    var BookStore;
+    var bookStore;
+    beforeEach(function() {
+      Book = function({title, author, genre, pageCount, publisherID, ISBN}) {
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.pageCount = pageCount;
+        this.publisherID = publisherID;
+        this.ISBN = ISBN;
+      };
+
+      BookFactory = factoryBuilder().build();
+
+      BookStore = flyweightBuilder({
+        constructor() {
+          this.bookFactory = new BookFactory();
+          this.bookFactory.add('book', Book);
+
+          // Extrincic Information
+          this.bookRecordDatabase = {};
+        },
+        publics: {
+          heuristic(book) {
+            return this.flyweights[book.ISBN] = this.flyweights[book.ISBN] || this.bookFactory.create('book', book);
+          },
+          addBookRecord({id, title, author, genre, pageCount, publisherID, ISBN, checkoutDate, checkoutMember, dueReturnDate, availability}) {
+            let book = this.create({title, author, genre, pageCount, publisherID, ISBN});
+            this.bookRecordDatabase[id] = {checkoutMember, checkoutDate, dueReturnDate, availability, book};
+          },
+          updateCheckoutStatus(bookID, newStatus, checkoutDate, checkoutMember, newReturnDate) {
+            let record = this.bookRecordDatabase[bookID];
+            if(record) {
+              record.availability = newStatus;
+              record.checkoutDate = checkoutDate;
+              record.checkoutMember = checkoutMember;
+              record.dueReturnDate = newReturnDate;
+            }
+          },
+          extendCheckoutPeriod(bookID, newReturnDate) {
+            let record = this.bookRecordDatabase[bookID];
+            record && (record.dueReturnDate = newReturnDate);
+          },
+          isPastDue(bookID) {
+            let record = this.bookRecordDatabase[bookID];
+            return record && (new Date()).getTime() > Date.parse(record.dueReturnDate);
+          }
+        },
+        statics: {
+          genres: {
+            science: 1,
+            fiction: 2,
+            etc: 3
+          }
+        }
+      }).build();
+
+      bookStore = new BookStore();
+
+      let book = {
+        title: 'Learning JavaScript Design Patterns',
+        author: 'Addy Osmani',
+        genre: BookStore.genres.science,
+        pageCount: 254,
+        publisherID: 'O\'Reilly Media',
+        ISBN: '978-1-4493-3181-8'
+      };
+      bookStore.addBookRecord({
+        id: 1,
+        checkoutDate: new Date(),
+        checkoutMember: 1,
+        dueReturnDate: (() => {
+          var date = new Date(this.valueOf());
+          var days = 5;
+          date.setDate(date.getDate() + days);
+          return date;
+        })(),
+        availability: true
+      });
+      bookStore.addBookRecord({
+        id: 2,
+        checkoutDate: new Date(),
+        checkoutMember: 1,
+        dueReturnDate: (() => {
+          var date = new Date(this.valueOf());
+          var days = 5;
+          date.setDate(date.getDate() + days);
+          return date;
+        })(),
+        availability: true
+      });
+    });
+    it('should only create a book once.', function() {
+      expect(Object.keys(bookStore.flyweights).length).toEqual(1);
     });
   });
 });
