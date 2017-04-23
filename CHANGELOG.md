@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Fixed
+### Changed
+
+## [v1.0.2](https://github.com/pgarciacamou/go-patterns/releases/tag/v1.0.2) - 2017-04-23
+### Added
 - Introduced CHANGELOG.md into project.
 
 ### Fixed
