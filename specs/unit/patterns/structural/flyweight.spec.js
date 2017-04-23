@@ -84,6 +84,14 @@ describe('flyweight', function() {
     var LightObjectCreation;
     var lightObjectCreation;
     beforeEach(function() {
+      function HeavyObject(value) {
+        this.data = value;
+        this.store = [];
+        for(var i = 0; i < value; i++){
+          this.store.push(i * Math.random());
+        }
+      }
+
       LightObjectCreation = flyweightBuilder({
         constructor() {
           // this overrides the default object.
@@ -94,7 +102,7 @@ describe('flyweight', function() {
             return this.find(params) || this.construct(params);
           },
           construct(params) {
-            var heavyObject = {data: params.data};
+            var heavyObject = new HeavyObject(params.data);
             this.flyweights.push(heavyObject);
             return heavyObject;
           },
@@ -114,10 +122,10 @@ describe('flyweight', function() {
       spyOn(lightObjectCreation, 'construct').and.callThrough();
 
       lightObjectCreation.create({
-        data: 13.01 // dummy specific data
+        data: 13 // dummy specific data
       });
       lightObjectCreation.create({
-        data: 13.01 // dummy specific data
+        data: 13 // dummy specific data
       });
     });
     it('should only construct the object only once.', function() {
