@@ -11,7 +11,7 @@ In order to get the patterns working correctly, I followed —as much as possibl
 
 ### When To Use
 
-I recommend using this library to quickly build code around design patterns but only as proof of concept (POC). Once the POC is finalized, I strongly suggest moving away from this library and add more robust pattern implementations, as they could be optimized/improved based on your project's requirements. Also, keep in mind that this library uses some techniques (e.g. dynamic inheritance) that are, most likely, considered bad practices as they could have side effects but, thanks to my experience working with JavaScript, I was able to work around them.
+I recommend using this library to quickly build code around design patterns but only as proof of concept (POC). Once the POC is finalized, I strongly suggest moving away from this library and add more robust pattern implementations, as they could be optimized/improved based on your project's requirements. Also, keep in mind that this library uses some advanced techniques (e.g. dynamic inheritance) that are not part of JavaScript and that are, most likely, considered bad practices as they could have side effects. Rest assure, I have years of experience working with JavaScript and knowing about the side effects I was able to work around them.
 
 ### Installation
 
