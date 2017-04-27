@@ -39,6 +39,18 @@ NOTE: if you really need to see how to use a specific pattern, please check the 
 
 A simple example is the singleton, which the idea behind it is that you can only create a single instance from a class.
 
+The simplest way to create a singleton is:
+
+```js
+import patterns from 'go-patterns';
+
+let Singleton = patterns.singleton().build();
+
+console.log(new Singleton() === new Singleton()) // true
+```
+
+A more verbose approach is:
+
 ```js
 import patterns from 'go-patterns';
 
@@ -53,7 +65,7 @@ let options = {
   statics: {}  // will be attached to the constructor
 };
 
-// Note: the options object is completely optional.
+// Note: the options object is completely optional (as seen in the example above).
 var Singleton = patterns.singleton(options).build();
 var singleton1 = new Singleton();
 var singleton2 = new Singleton();
