@@ -3,7 +3,6 @@ import createPatternBuilder from '../../helpers/createPatternBuilder.js';
 
 export default createPatternBuilder(options => {
   function MVW(...args) {
-    this.flyweights = {};
     this.model = {};
     options.constructor.apply(this, args);
   }
