@@ -1,6 +1,6 @@
 // Karma configuration
 // Generated on Sat May 28 2016 18:09:57 GMT-0700 (PDT)
-
+const SINGLE_RUN = process.env.SINGLE_RUN || false;
 module.exports = function(config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -55,11 +55,11 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: !SINGLE_RUN,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: SINGLE_RUN,
 
     // Concurrency level
     // how many browser should be started simultaneous

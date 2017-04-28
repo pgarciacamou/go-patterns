@@ -115,8 +115,8 @@ NOTE: Don't forget to add the respective unit tests for quality purposes.
 ### Development
 
 1. fork/clone repo
-2. install dependencies `npm install`
-3. run unit test suites `npm run test`
+2. install dependencies `npm reinstall`
+3. run unit test suites `npm run tdd`
 
 ### Deployment (Publish && Release)
 
