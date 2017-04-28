@@ -14,7 +14,8 @@
     "tdd": "karma start",
     "test": "npm run lint && SINGLE_RUN=true karma start",
     "lint": "./node_modules/.bin/eslint src/** specs/**",
-    "lintfix": "./node_modules/.bin/eslint src/** specs/** --fix"
+    "lintfix": "./node_modules/.bin/eslint src/** specs/** --fix",
+    "reinstall": "rm -rf node_modules/ && npm install"
   },
   "repository": {
     "type": "git",
