@@ -6,6 +6,7 @@ import mediator from './patterns/behavioral/mediator.js';
 import command from './patterns/behavioral/command.js';
 import memento from './patterns/behavioral/memento.js';
 import flyweight from './patterns/structural/flyweight.js';
+import mvw from './patterns/architectural/mvw.js';
 
 var patterns = {
   singleton,
@@ -15,7 +16,8 @@ var patterns = {
   mediator,
   command,
   memento,
-  flyweight
+  flyweight,
+  mvw
 };
 
 export default patterns;
