@@ -18,7 +18,6 @@ module.exports = function(config) {
     // including non-commonJS files you need to load before your test cases 
     // list of files / patterns to load in the browser
     files: [
-      'src/**/*.js',
       'specs/**/*.spec.js'
     ],
 

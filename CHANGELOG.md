@@ -6,10 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Include example directory that installs the library and uses it.
+- Added .npmignore file to ignore src/ directory.
+- Using babel-cli and some related modules to compile for npm usage.
 - Introducing MVW pattern
 
 ### Fixed
+- We can now use the library without having to have ES6 features.
+- Created a lib/ directory to publish to npm.
+
 ### Changed
+- Changed package.json "main" to lib/go-patterns.js.
 - Modified babel presets and plugins
 
 ## [v1.0.2](https://github.com/pgarciacamou/go-patterns/releases/tag/v1.0.2) - 2017-04-23
