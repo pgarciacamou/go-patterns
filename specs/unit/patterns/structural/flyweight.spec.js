@@ -88,7 +88,7 @@ describe('flyweight', function() {
       function HeavyObject(value) {
         this.data = value;
         this.store = [];
-        for(var i = 0; i < value; i++){
+        for(var i = 0; i < value; i++) {
           this.store.push(i * Math.random());
         }
       }
@@ -209,24 +209,26 @@ describe('flyweight', function() {
         checkoutDate: new Date(),
         checkoutMember: 1,
         dueReturnDate: (() => {
-          var date = new Date(this.valueOf());
+          var date = new Date();
           var days = 5;
           date.setDate(date.getDate() + days);
           return date;
         })(),
-        availability: true
+        availability: true,
+        ...book
       });
       bookStore.addBookRecord({
         id: 2,
         checkoutDate: new Date(),
         checkoutMember: 1,
         dueReturnDate: (() => {
-          var date = new Date(this.valueOf());
+          var date = new Date();
           var days = 5;
           date.setDate(date.getDate() + days);
           return date;
         })(),
-        availability: true
+        availability: true,
+        ...book
       });
     });
     it('should only create a book once.', function() {

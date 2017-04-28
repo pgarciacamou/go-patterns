@@ -21,7 +21,7 @@ describe('publish subscribe pattern', function() {
     publishSubscribe.subscribe('test', (arg) => {
       expect(arg).toEqual('testing');
     });
-    publishSubscribe.publish('test', 'testing')
+    publishSubscribe.publish('test', 'testing');
   });
   it('should create an publishSubscribe', function() {
     expect(publishSubscribe).toBeDefined();

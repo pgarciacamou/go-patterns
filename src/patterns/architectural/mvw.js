@@ -7,10 +7,10 @@ export default createPatternBuilder(options => {
     options.constructor.apply(this, args);
   }
   extend(MVW.prototype, {
-    add(prop, propOptions={}) {
+    add(prop, propOptions = {}) {
       let self = this;
       let value;
-      
+
       propOptions = this.model[prop] = {
         shouldModelUpdate() { return true; },
         modelWillUpdate() {},
@@ -18,7 +18,7 @@ export default createPatternBuilder(options => {
         handleViewUpdate() {},
         ...propOptions
       };
-      
+
       Object.defineProperty(propOptions, 'value', {
         set(newValue) {
           if(value !== newValue && propOptions.shouldModelUpdate.call(self, newValue, value)) {
@@ -30,7 +30,7 @@ export default createPatternBuilder(options => {
           return value;
         }
       });
-      
+
       propOptions.handleViewUpdate.call(self, value => propOptions.value = value);
       propOptions.value = propOptions.defaultValue;
     }

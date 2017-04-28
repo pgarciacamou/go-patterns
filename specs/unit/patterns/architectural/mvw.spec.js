@@ -1,8 +1,8 @@
-/* globals expect, beforeEach, it, describe, spyOn, jasmine */
+/* globals document, expect, beforeEach, it, describe, spyOn, jasmine */
 import mvwBuilder from '../../../../src/patterns/architectural/mvw.js';
 
 function dispatchEvent(element, eventName, eventData) {
-  var ev = document.createEvent("Event");
+  var ev = document.createEvent('Event');
   ev.data = eventData;
   ev.initEvent(eventName, true, true);
   element.dispatchEvent(ev);
@@ -12,7 +12,6 @@ describe('mvw', function() {
   let MVW;
   let mvw;
   let somePropOptions;
-  let shouldModelUpdateSpy;
   let updateValueCallback;
   let fakeUpdateView;
 
@@ -30,18 +29,16 @@ describe('mvw', function() {
       modelDidUpdate() {
         expect(this).toEqual(mvw);
       }
-    })
+    });
   });
 
   describe('full options', function() {
     beforeEach(function() {
-      shouldModelUpdateSpy = jasmine.createSpy('shouldModelUpdateSpy');
-
       somePropOptions = {
         defaultValue: 1,
-        shouldModelUpdate(newValue, oldValue) { return true },
-        modelWillUpdate(newValue, oldValue) {},
-        modelDidUpdate(newValue) {},
+        shouldModelUpdate(/*newValue, oldValue*/) { return true; },
+        modelWillUpdate(/*newValue, oldValue*/) {},
+        modelDidUpdate(/*newValue*/) {},
         handleViewUpdate(updateValue) {
           updateValueCallback = updateValue;
           fakeUpdateView = value => updateValue(value);
@@ -95,13 +92,11 @@ describe('mvw', function() {
   });
   describe('no default value', function() {
     beforeEach(function() {
-      shouldModelUpdateSpy = jasmine.createSpy('shouldModelUpdateSpy');
-
       somePropOptions = {
-        shouldModelUpdate(newValue, oldValue) { return true },
-        modelWillUpdate(newValue, oldValue) {},
-        modelDidUpdate(newValue) {},
-        handleViewUpdate(updateValue) {}
+        shouldModelUpdate(/*newValue, oldValue*/) { return true; },
+        modelWillUpdate(/*newValue, oldValue*/) {},
+        modelDidUpdate(/*newValue*/) {},
+        handleViewUpdate(/*updateValue*/) {}
       };
 
       spyOn(somePropOptions, 'shouldModelUpdate').and.callThrough();
@@ -155,7 +150,7 @@ describe('mvw', function() {
       mvw = new MVW();
       mvw.add('bodyState', {
         defaultValue: 1,
-        shouldModelUpdate(newValue, oldValue) {
+        shouldModelUpdate(newValue/*, oldValue*/) {
           return !isNaN(newValue) && newValue > 0;
         },
         modelWillUpdate(newValue, oldValue) {
@@ -195,7 +190,7 @@ describe('mvw', function() {
           this.input.value = newValue;
         },
         handleViewUpdate(updateValue) {
-          this.input.addEventListener("input", e => updateValue(this.input.value), false);
+          this.input.addEventListener('input', () => updateValue(this.input.value), false);
         }
       });
     });
