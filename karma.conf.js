@@ -31,7 +31,10 @@ module.exports = function(config) {
     browserify: {
       debug: true,
       transform: [ 
-        ['babelify', {presets: [ "es2015" ]}] 
+        ['babelify', {
+          presets: [ "es2015", "es2016", "es2017" ],
+          plugins: [ "transform-object-rest-spread" ]
+        }] 
       ],
       extensions: [ '.js' ]
     },
