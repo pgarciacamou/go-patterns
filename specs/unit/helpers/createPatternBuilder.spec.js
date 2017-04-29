@@ -1,5 +1,5 @@
 /* globals expect, it, describe, beforeEach */
-import createPatternBuilder from '../../../src/helpers/createPatternBuilder.js';
+import createNew from '../../../src/helpers/createPatternBuilder.js';
 
 describe('build pattern helper', function() {
   var pattern;
@@ -7,7 +7,7 @@ describe('build pattern helper', function() {
   var PatternClass;
   var patternInstance;
   beforeEach(function() {
-    pattern = createPatternBuilder(options => {
+    pattern = createNew(options => {
       function Pattern(...args) {
         this.implementsPattern = true;
         options.constructor.apply(this, args);

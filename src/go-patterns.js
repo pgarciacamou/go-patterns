@@ -7,6 +7,7 @@ import command from './patterns/behavioral/command.js';
 import memento from './patterns/behavioral/memento.js';
 import flyweight from './patterns/structural/flyweight.js';
 import mvw from './patterns/architectural/mvw.js';
+import createNew from './helpers/createPatternBuilder.js';
 
 var patterns = {
   singleton,
@@ -17,7 +18,10 @@ var patterns = {
   command,
   memento,
   flyweight,
-  mvw
+  mvw,
+
+  // helpers
+  createNew
 };
 
 export default patterns;
