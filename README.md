@@ -75,6 +75,8 @@ let unrepeatedNumbersBuilder = patterns.createNew(options => {
     }
   }
 
+  UnrepeatedNumbers.prototype.lowerBound = 0;
+  UnrepeatedNumbers.prototype.upperBound = 100;
   UnrepeatedNumbers.prototype.genNumber = function() {
     if(this._prevNumbers.length === 0) {
       return null;
@@ -93,10 +95,6 @@ let UnrepeatedNumbers = unrepeatedNumbersBuilder({
   constructor: function(lowerBound=this.lowerBound, upperBound=this.upperBound) {
     this.lowerBound = lowerBound;
     this.upperBound = upperBound;
-  },
-  publics: {
-    lowerBound: 0,
-    upperBound: 100,
   }
 }).build();
 
@@ -113,16 +111,7 @@ console.log(A.genNumber()); // null (out of numbers)
 console.log(B.genNumber()); // unrepeated random number from 0 to 100
 
 // It will be immediately compatible with the rest of the patterns:
-let SingletonUnrepeatedNumbers = patterns.singleton(unrepeatedNumbersBuilder({
-  constructor: function(lowerBound, upperBound) {
-    this.lowerBound = lowerBound || this.lowerBound;
-    this.upperBound = upperBound || this.upperBound;
-  },
-  publics: {
-    lowerBound: 0,
-    upperBound: 100,
-  }
-})).build();
+let SingletonUnrepeatedNumbers = patterns.singleton(unrepeatedNumbersBuilder()).build();
 
 console.log(new SingletonUnrepeatedNumbers() === new SingletonUnrepeatedNumbers()); // true
 ```
