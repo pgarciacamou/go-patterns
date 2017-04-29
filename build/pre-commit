@@ -1,0 +1,14 @@
+#!/bin/sh
+cd .
+[ -f package.json ] && cat package.json | grep -q '"precommit"\s*:'
+[ $? -ne 0 ] && exit 0
+export PATH=$PATH:/usr/local/bin:/usr/local
+command -v npm >/dev/null 2>&1 || { echo >&2 "husky - can't find npm in PATH. Skipping precommit script in package.json"; exit 0; }
+export GIT_PARAMS="$*"
+npm run precommit
+if [ $? -ne 0 ]; then
+  echo
+  echo "husky - pre-commit hook failed (add --no-verify to bypass)"
+  echo
+  exit 1
+fi
