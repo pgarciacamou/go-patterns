@@ -127,7 +127,8 @@ In order to get the patterns working correctly, I followed —as much as possibl
 ### Development
 
 1. fork/clone repo
-2. install dependencies `npm reinstall`
+2. setup project `npm run setup`
+2. install dependencies `npm run reinstall`
 3. run unit test suites `npm run tdd`
 
 NOTE: `npm reinstall` should be run **always** after pulling from **master** branch.
