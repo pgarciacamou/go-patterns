@@ -120,7 +120,7 @@ I recommend using this library to quickly build code around design patterns but 
 
 go-patterns is a tool that builds design patterns _on the **go**_. The original idea was to create a library that could allow an easy access to inherit/inject patterns into the code without having to worry much about the actual implementation. Due to the complexity of a lot of patterns and some restrictions on ES6, it mutated into an API built around the builder pattern, which dynamically creates patterns using JavaScript.
 
-The overhead, file size, and footprint of this library is intended to be very small (currently <15KB [<4KB when gzipped]), thus most of the patterns are simplified/abstracted to a heavy extent. Abstracting the patterns was crucial as it increased the flexibility of the library, allowed to wrap patterns on top of other patterns, and made patterns compatible with the library's pre-designed API.
+The overhead, file size, and footprint of this library is intended to be very small (currently <20KB [<5KB when gzipped]), thus most of the patterns are simplified/abstracted to a heavy extent. Abstracting the patterns was crucial as it increased the flexibility of the library, allowed to wrap patterns on top of other patterns, and made patterns compatible with the library's pre-designed API.
 
 In order to get the patterns working correctly, I followed —as much as possible— the patterns' implementations from the [Essential JS Design Patterns](https://addyosmani.com/resources/essentialjsdesignpatterns/book/) book. There are still a lot more patterns in this book that are missing from this library, some patterns I'm working on, some I don't really have time to implement, and some others are very hard to abstract to make it compatible with the API, e.g. I just added the MVW pattern which took a while to abstract to something flexible and usable that didn't consume a lot of computer power.
 
@@ -136,9 +136,10 @@ NOTE: `npm reinstall` should be run **always** after pulling from **master** bra
 ### Deployment (Publish && Release)
 
 1. Reinstall dependencies if needed: `npm run reinstall`
-2. Create distribution files: `npm run dist`
-3. Login to NPM: `npm login`
-4. Increase library version: `npm version [major|minor|patch]`
-5. Upload new tag created on step 4: `git push origin <new tag>`
-6. Create release in GitHub (attach dist/* files created in step 2)
-7. Publish: `npm publish`
+2. Update `CHANGELOG.md`
+3. Create distribution files: `npm run dist`
+4. Login to NPM: `npm login`
+5. Increase library version: `npm version [major|minor|patch]`
+6. Upload new tag created on step 5: `git push origin <new tag>`
+7. Create release in GitHub (attach dist/* files created in step 3)
+8. Publish: `npm publish`
