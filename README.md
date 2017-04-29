@@ -134,9 +134,10 @@ NOTE: `npm reinstall` should be run **always** after pulling from **master** bra
 
 ### Deployment (Publish && Release)
 
-1. Login to NPM: `npm login`
-2. Increase library version: `npm version [major|minor|patch]`
-3. Upload new tag created on step 2: `git push origin <new tag>`
-4. Create distribution files `npm run dist`
-5. Create release in GitHub (attach dist/* files created in step 4)
-6. Publish: `npm publish`
+1. Reinstall dependencies if needed: `npm run reinstall`
+2. Create distribution files: `npm run dist`
+3. Login to NPM: `npm login`
+4. Increase library version: `npm version [major|minor|patch]`
+5. Upload new tag created on step 4: `git push origin <new tag>`
+6. Create release in GitHub (attach dist/* files created in step 2)
+7. Publish: `npm publish`
