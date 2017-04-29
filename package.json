@@ -14,9 +14,9 @@
     "test": "npm run lint && SINGLE_RUN=true karma start",
     "lint": "./node_modules/.bin/eslint src/** specs/**",
     "lintfix": "./node_modules/.bin/eslint src/** specs/** --fix",
+    "setup": "npm run copyhooks",
     "reinstall": "rm -rf node_modules/ && npm install",
-    "copyhooks": "cp -fr ./build/pre-commit .git/hooks/pre-commit",
-    "install": "npm run copyhooks"
+    "copyhooks": "cp -fr ./build/pre-commit .git/hooks/pre-commit"
   },
   "repository": {
     "type": "git",
