@@ -49,17 +49,20 @@ console.log(singleton2 instanceof Singleton); // true
 console.log(singleton2 instanceof MySingletonConstructor); // true
 ```
 
-### How To Add A New Pattern
+### How To Create A New Pattern
 
-To add new patterns to this library, take a look at previously created patterns. I use a helper called `createPatternBuilder` which is in charge of 95% of the dynamic inheritance, the other 5% needs to be taken care within the pattern.
+To create a new pattern for your own stack, you can use the `createNew` method that is shipped with the go-patterns API. This helper is in charge of 99% of the dynamic inheritance, the other 1% needs to be taken care within the pattern's implementation. Take a look at previously created patterns, you will notice that `createNew` is simply called `createPatternBuilder` within the library. This is the core functionality of go-patterns and it is exactly why the patterns need to be abstracted.
 
-`createPatternBuilder` takes in a function that needs to return the pattern's constructor. With this, `createPatternBuilder` will then return a "_builder_" object which will either extend the pattern's constructor when the pattern is built, or use to wrap around other patterns. This is the core functionality of this library and it is exactly why the patterns need to be abstracted to work with this.
+`createNew` takes in a function that needs to return the pattern's constructor. With this, `createNew` will then return a "_builder_" object which will either extend the pattern's constructor when the pattern is built, or use to wrap around other patterns. 
 
 For example, let's create a pattern that for some reason returns a random unrepeated integer from 0 to 100, but this pattern can be extended to also update those limits:
 
 ```js
+import patterns from 'go-patterns';
+
 // Pattern Definition
-let unrepeatedNumbersBuilder = createPatternBuilder(options => {
+let unrepeatedNumbersBuilder = patterns.createNew(options => {
+  // private functionality
   function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
   }
@@ -72,18 +75,14 @@ let unrepeatedNumbersBuilder = createPatternBuilder(options => {
     }
   }
 
-  extend(UnrepeatedNumbers.prototype, {
-    lowerBound: 0,
-    upperBound: 100,
-    genNumber() {
-      if(this._prevNumbers.length === 0) {
-        return null;
-      }
-
-      let index = randomIntFromInterval(0, this._prevNumbers.length - 1);
-      return this._prevNumbers.splice(index, 1)[0];
+  UnrepeatedNumbers.prototype.genNumber = function() {
+    if(this._prevNumbers.length === 0) {
+      return null;
     }
-  });
+
+    let index = randomIntFromInterval(0, this._prevNumbers.length - 1);
+    return this._prevNumbers.splice(index, 1)[0];
+  };
 
   return UnrepeatedNumbers;
 });
@@ -94,6 +93,10 @@ let UnrepeatedNumbers = unrepeatedNumbersBuilder({
   constructor: function(lowerBound=this.lowerBound, upperBound=this.upperBound) {
     this.lowerBound = lowerBound;
     this.upperBound = upperBound;
+  },
+  publics: {
+    lowerBound: 0,
+    upperBound: 100,
   }
 }).build();
 
@@ -108,9 +111,23 @@ console.log(A.genNumber()); // unrepeated random number #4
 console.log(A.genNumber()); // null (out of numbers)
 
 console.log(B.genNumber()); // unrepeated random number from 0 to 100
+
+// It will be immediately compatible with the rest of the patterns:
+let SingletonUnrepeatedNumbers = patterns.singleton(unrepeatedNumbersBuilder({
+  constructor: function(lowerBound, upperBound) {
+    this.lowerBound = lowerBound || this.lowerBound;
+    this.upperBound = upperBound || this.upperBound;
+  },
+  publics: {
+    lowerBound: 0,
+    upperBound: 100,
+  }
+})).build();
+
+console.log(new SingletonUnrepeatedNumbers() === new SingletonUnrepeatedNumbers()); // true
 ```
 
-NOTE: Don't forget to add the respective unit tests for quality purposes.
+NOTE: `createNew` will return the pattern BUT it won't add it to the API. If you want to add new patterns to this library, PRs are welcomed, and don't forget to add the respective unit tests for quality purposes.
 
 ### When To Use
 
