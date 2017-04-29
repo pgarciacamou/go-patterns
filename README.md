@@ -112,21 +112,6 @@ console.log(B.genNumber()); // unrepeated random number from 0 to 100
 
 NOTE: Don't forget to add the respective unit tests for quality purposes.
 
-### Development
-
-1. fork/clone repo
-2. install dependencies `npm reinstall`
-3. run unit test suites `npm run tdd`
-
-### Deployment (Publish && Release)
-
-1. Login to NPM: `npm login`
-2. Increase library version: `npm version [major|minor|patch]`
-3. Upload new tag created on step 2: `git push origin <new tag>`
-4. Create distribution files `npm run dist`
-5. Create release in GitHub (attach dist/* files created in step 4)
-6. Publish: `npm publish`
-
 ### When To Use
 
 I recommend using this library to quickly build code around design patterns but only as proof of concept (POC). Once the POC is finalized, I strongly suggest moving away from this library and add more robust pattern implementations, as they could be optimized/improved based on your project's requirements. Also, keep in mind that this library uses some advanced techniques (e.g. dynamic inheritance) that are not part of JavaScript and that are, most likely, considered bad practices as they could have side effects. Rest assure, I have years of experience working with JavaScript and knowing about the side effects I was able to work around them.
@@ -138,3 +123,21 @@ go-patterns is a tool that builds design patterns _on the **go**_. The original 
 The overhead, file size, and footprint of this library is intended to be very small (currently <15KB [<4KB when gzipped]), thus most of the patterns are simplified/abstracted to a heavy extent. Abstracting the patterns was crucial as it increased the flexibility of the library, allowed to wrap patterns on top of other patterns, and made patterns compatible with the library's pre-designed API.
 
 In order to get the patterns working correctly, I followed —as much as possible— the patterns' implementations from the [Essential JS Design Patterns](https://addyosmani.com/resources/essentialjsdesignpatterns/book/) book. There are still a lot more patterns in this book that are missing from this library, some patterns I'm working on, some I don't really have time to implement, and some others are very hard to abstract to make it compatible with the API, e.g. I just added the MVW pattern which took a while to abstract to something flexible and usable that didn't consume a lot of computer power.
+
+### Development
+
+1. fork/clone repo
+2. install dependencies `npm reinstall`
+3. run unit test suites `npm run tdd`
+
+NOTE: `npm reinstall` should be run **always** after pulling from **master** branch.
+
+### Deployment (Publish && Release)
+
+1. Reinstall dependencies if needed: `npm run reinstall`
+2. Create distribution files: `npm run dist`
+3. Login to NPM: `npm login`
+4. Increase library version: `npm version [major|minor|patch]`
+5. Upload new tag created on step 4: `git push origin <new tag>`
+6. Create release in GitHub (attach dist/* files created in step 2)
+7. Publish: `npm publish`

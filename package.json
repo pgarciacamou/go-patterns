@@ -4,7 +4,6 @@
   "description": "JavaScript Design Pattern Generator",
   "main": "lib/go-patterns.js",
   "scripts": {
-    "prepush": "npm run test",
     "precommit": "npm run test",
     "clean": "rm -rf dist/ lib/ && mkdir -p lib/ dist/",
     "standalone": "./node_modules/browserify/bin/cmd.js index.js -o dist/go-patterns.js -t [ babelify --presets [ es2015 ] ] -s patterns",
@@ -15,7 +14,9 @@
     "test": "npm run lint && SINGLE_RUN=true karma start",
     "lint": "./node_modules/.bin/eslint src/** specs/**",
     "lintfix": "./node_modules/.bin/eslint src/** specs/** --fix",
-    "reinstall": "rm -rf node_modules/ && npm install"
+    "reinstall": "rm -rf node_modules/ && npm install",
+    "copyhooks": "cp -fr ./build/pre-commit .git/hooks/pre-commit",
+    "install": "npm run copyhooks"
   },
   "repository": {
     "type": "git",
