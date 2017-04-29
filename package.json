@@ -1,6 +1,6 @@
 {
   "name": "go-patterns",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "JavaScript Design Pattern Generator",
   "main": "lib/go-patterns.js",
   "scripts": {
