@@ -118,6 +118,8 @@ NOTE: Don't forget to add the respective unit tests for quality purposes.
 2. install dependencies `npm reinstall`
 3. run unit test suites `npm run tdd`
 
+NOTE: `npm reinstall` should be run **always** after pulling from **master** branch.
+
 ### Deployment (Publish && Release)
 
 1. Login to NPM: `npm login`
