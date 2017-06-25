@@ -24,18 +24,10 @@ describe('chain of responsibility', function() {
       }
     }).build();
     chain = new ChainOfResponsibility()
-      .add(defaultSpy)
       .add((next, t) => {
         if(t instanceof Array) {
           arraySpy();
           return 'array';
-        }
-        next();
-      })
-      .add((next, t) => {
-        if(t instanceof Function) {
-          shouldNotRunSpy();
-          return 'shouldNotRun';
         }
         next();
       })
@@ -47,12 +39,20 @@ describe('chain of responsibility', function() {
         next();
       })
       .add((next, t) => {
+        if(t instanceof Function) {
+          shouldNotRunSpy();
+          return 'shouldNotRun';
+        }
+        next();
+      })
+      .add((next, t) => {
         if(t === 'continue') {
           next();
           return 'shouldNotReturnThis';
         }
         next();
-      });
+      })
+      .add(defaultSpy);
   });
   it('should allow empty options', function() {
     var emptyOptions = undefined;

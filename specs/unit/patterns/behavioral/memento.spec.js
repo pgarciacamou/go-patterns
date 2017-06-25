@@ -53,9 +53,13 @@ describe('memento', function() {
       };
 
       chain = (...args) => {
-        var ChainOfResponsibility = chainOfResponsibilityBuilder().build();
+        var ChainOfResponsibility = chainOfResponsibilityBuilder({
+          constructor: function() {
+            this.add = this.add.bind(this);
+          }
+        }).build();
         var overloader = new ChainOfResponsibility();
-        args.forEach(overloader.add.bind(overloader));
+        args.forEach(overloader.add);
         return overloader.run;
       };
 
@@ -67,23 +71,23 @@ describe('memento', function() {
 
           var execute = this.execute.bind(this);
           this.execute = chain(
-            this._onExecute.bind(this),
             (next, ...args) => {
               execute(...args);
               next();
-            }
+            },
+            this._onExecute.bind(this)
           );
 
           var add = this.add.bind(this);
           this.add = chain(
-            (_, o) => {
-              add(o);
-            },
             (next, method, obj) => {
               if(typeof method !== 'string') {
                 return next();
               }
               this.methods[method] = obj;
+            },
+            (_, o) => {
+              add(o);
             }
           );
         },

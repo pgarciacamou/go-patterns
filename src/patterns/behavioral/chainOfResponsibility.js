@@ -1,7 +1,6 @@
 import extend from '../../helpers/extend.js';
 import createPatternBuilder from '../../helpers/createPatternBuilder.js';
 
-
 export default createPatternBuilder(options => {
   function ChainOfResponsibility(...args) {
     this.chain = [];
@@ -11,7 +10,7 @@ export default createPatternBuilder(options => {
   extend(ChainOfResponsibility.prototype, {
     add(fn) {
       if(!this.contains(fn)) {
-        this.chain.unshift(fn);
+        this.chain.push(fn);
       }
       return this;
     },
