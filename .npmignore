@@ -1,2 +1,7 @@
 # Development
 src/
+DEVELOP.md
+example/
+build/
+specs/
+node_modules/
