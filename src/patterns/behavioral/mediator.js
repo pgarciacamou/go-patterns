@@ -26,7 +26,7 @@ export default createPatternBuilder(options => {
     broadcast(message, from) {
       for(var prop in this.participants) {
         if(this.participants.hasOwnProperty(prop)) {
-          this.participants[prop](message, from);
+          this.participants[prop] && this.participants[prop](message, from);
         }
       }
       return this;
