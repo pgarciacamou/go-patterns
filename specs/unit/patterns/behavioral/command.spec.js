@@ -47,20 +47,17 @@ describe('command', function() {
       };
 
       UndoManager = commandBuilder({
-        constructor() {
+        constructor: function() {
           this.methods = {};
           this.pit = new PointInTime();
           var execute = this.execute.bind(this);
           this.execute = (...args) => {
-            execute(...args);
+            execute('run', ...args);
             this._onExecute(...args);
           };
         },
         publics: {
-          _onExecute(_, ...args) {
-            if(_ !== 'run') {
-              return this.execute('run', _, ...args);
-            }
+          _onExecute(...args) {
             var pit = new PointInTime(args);
             pit.previous = this.pit;
             this.pit.next = pit;
@@ -82,7 +79,7 @@ describe('command', function() {
             var mName = this.pit.data[0];
             var method = this.methods[mName];
             if(method) {
-              method.undo.apply(this.pit.data.slice(1));
+              method.undo.apply(null, this.pit.data.slice(1));
             }
             this.pit = this.pit.previous;
           },
@@ -94,7 +91,7 @@ describe('command', function() {
             var mName = this.pit.data[0];
             var method = this.methods[mName];
             if(method) {
-              method.redo(this.pit.data.slice(1));
+              method.redo.apply(null, this.pit.data.slice(1));
             }
           }
         }

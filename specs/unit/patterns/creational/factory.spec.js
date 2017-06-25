@@ -18,7 +18,7 @@ describe('Factory', function() {
       }
     };
     CarFactory = factoryBuilder({
-      constructor(name) {
+      constructor: function(name) {
         this._name = name;
       },
       publics: {
@@ -100,7 +100,7 @@ describe('Factory', function() {
       factorySpy = jasmine.createSpy('factorySpy');
       singletonSpy = jasmine.createSpy('singletonSpy');
       FactoryOfFactories = factoryBuilder({
-        constructor() {},
+        constructor: function() {},
         publics: {},
         statics: {}
       }).build();

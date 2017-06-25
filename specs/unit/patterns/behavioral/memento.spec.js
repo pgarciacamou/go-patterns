@@ -60,7 +60,7 @@ describe('memento', function() {
       };
 
       UndoManager = mementoBuilder(commandBuilder({
-        constructor() {
+        constructor: function() {
           this.methods = {};
           this.state = {};
           this.pit = new PointInTime(this.add(this.state));

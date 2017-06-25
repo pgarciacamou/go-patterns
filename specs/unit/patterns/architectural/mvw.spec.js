@@ -143,7 +143,7 @@ describe('mvw', function() {
       beforeValue = 1;
 
       MVW = mvwBuilder({
-        constructor() {
+        constructor: function() {
           this.elem = document.body;
         }
       }).build();
@@ -179,7 +179,7 @@ describe('mvw', function() {
       modelWillUpdateSpy = jasmine.createSpy('modelWillUpdateSpy');
 
       MVW = mvwBuilder({
-        constructor() {
+        constructor: function() {
           this.input = input = document.createElement('input');
         }
       }).build();

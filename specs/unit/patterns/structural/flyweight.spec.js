@@ -24,7 +24,7 @@ describe('flyweight', function() {
     flyweight.create('test', {test: 'testing'});
     expect(flyweight.flyweights['test'].test).toEqual('testing');
   });
-  it('should throw an error', function() {
+  it('should NOT throw an error', function() {
     expect(function() {
       var Flyweight = flyweightBuilder().build();
       var flyweight = new Flyweight();
@@ -59,7 +59,7 @@ describe('flyweight', function() {
       FactorialMemoizationFlyweight = singletonBuilder(flyweightBuilder({
         publics: {
           heuristic(val) {
-            return this.flyweights[val + ''] = this.flyweights[val] || this.factorial(val);
+            return this.flyweights[`${val}`] = this.flyweights[`${val}`] || this.factorial(val);
           },
           factorial(val) {
             if(val <= 1) return 1;
@@ -94,7 +94,7 @@ describe('flyweight', function() {
       }
 
       LightObjectCreation = flyweightBuilder({
-        constructor() {
+        constructor: function() {
           // this overrides the default object.
           this.flyweights = [];
         },
@@ -152,7 +152,7 @@ describe('flyweight', function() {
       BookFactory = factoryBuilder().build();
 
       BookStore = flyweightBuilder({
-        constructor() {
+        constructor: function() {
           this.bookFactory = new BookFactory();
           this.bookFactory.add('book', Book);
 

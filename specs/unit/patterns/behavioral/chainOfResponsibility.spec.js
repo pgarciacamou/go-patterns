@@ -16,7 +16,7 @@ describe('chain of responsibility', function() {
     shouldNotRunSpy = jasmine.createSpy('shouldNotRun');
     defaultSpy = jasmine.createSpy('default');
     ChainOfResponsibility = chainOfResponsibilityBuilder({
-      constructor: () => {
+      constructor: function() {
         constructorSpy();
       },
       publics: {
@@ -24,40 +24,40 @@ describe('chain of responsibility', function() {
       }
     }).build();
     chain = new ChainOfResponsibility()
-    .add(defaultSpy)
-    .add((next, t) => {
-      if(t instanceof Array) {
-        arraySpy();
-        return 'array';
-      }
-      next();
-    })
-    .add((next, t) => {
-      if(t instanceof Function) {
-        shouldNotRunSpy();
-        return 'shouldNotRun';
-      }
-      next();
-    })
-    .add((next, t) => {
-      if(t instanceof Function) {
-        functionSpy();
-        return 'function';
-      }
-      next();
-    })
-    .add((next, t) => {
-      if(t === 'continue') {
+      .add(defaultSpy)
+      .add((next, t) => {
+        if(t instanceof Array) {
+          arraySpy();
+          return 'array';
+        }
         next();
-        return 'shouldNotReturnThis';
-      }
-      next();
-    });
+      })
+      .add((next, t) => {
+        if(t instanceof Function) {
+          shouldNotRunSpy();
+          return 'shouldNotRun';
+        }
+        next();
+      })
+      .add((next, t) => {
+        if(t instanceof Function) {
+          functionSpy();
+          return 'function';
+        }
+        next();
+      })
+      .add((next, t) => {
+        if(t === 'continue') {
+          next();
+          return 'shouldNotReturnThis';
+        }
+        next();
+      });
   });
   it('should allow empty options', function() {
     var emptyOptions = undefined;
-    var ChainOfResponsibility = chainOfResponsibilityBuilder().build();
-    var chain = new ChainOfResponsibility(emptyOptions);
+    var ChainOfResponsibility = chainOfResponsibilityBuilder(emptyOptions).build();
+    var chain = new ChainOfResponsibility();
     var result = chain.add((next, t) => {
       return t;
     }).run('test');
