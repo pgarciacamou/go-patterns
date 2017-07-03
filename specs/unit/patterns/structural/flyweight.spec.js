@@ -38,6 +38,14 @@ describe('flyweight', function() {
     expect(test).toBeDefined();
     expect(test.test).toEqual('testing');
   });
+  it('should create a flyweight object from a function', function() {
+    function creator(arg) {
+      return { test: `testing-${arg}` };
+    }
+    var test = flyweight.create('test', creator, 1);
+    expect(test).toBeDefined();
+    expect(test.test).toEqual('testing-1');
+  });
   it('should return a previously created flyweight object', function() {
     flyweight.create('test', {
       test: 'testing'
