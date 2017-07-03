@@ -11,7 +11,7 @@ describe('mediator', function() {
   beforeEach(function() {
     participantA = jasmine.createSpy('A');
     participantB = jasmine.createSpy('B');
-    participantC = jasmine.createSpy('B');
+    participantC = jasmine.createSpy('C');
     constructor = jasmine.createSpy('constructor');
     Mediator = mediatorBuilder({
       constructor: function(...args) {
@@ -24,14 +24,40 @@ describe('mediator', function() {
     mediator = new Mediator('test');
     mediator.register('participantA', participantA);
     mediator.register('participantB', participantB);
-    mediator.send('testA', 'participantB', 'participantA');
-    mediator.send('testB', 'participantA', 'participantB');
-    mediator.broadcast('broadcast', 'participantA');
-    mediator.send('send broadcast', 'participantA');
-    mediator.send('anonymous', undefined, 'participantA');
-    mediator.send('send anonymous broadcast');
-    mediator.broadcast('anonymous broadcast');
-    mediator.send('lost', 'participantA', 'non-existant');
+    mediator.send({
+      message: 'testA',
+      from: 'participantB',
+      to: 'participantA'
+    });
+    mediator.send({
+      message: 'testB',
+      from: 'participantA',
+      to: 'participantB'
+    });
+    mediator.broadcast({
+      message: 'broadcast',
+      from: 'participantA'
+    });
+    mediator.send({
+      message: 'send broadcast',
+      from: 'participantA'
+    });
+    mediator.send({
+      message: 'anonymous',
+      from: undefined,
+      to: 'participantA'
+    });
+    mediator.send({
+      message: 'send anonymous broadcast'
+    });
+    mediator.broadcast({
+      message: 'anonymous broadcast'
+    });
+    mediator.send({
+      message: 'lost',
+      from: 'participantA',
+      to: 'non-existant'
+    });
     mediator.register('non-existant', participantC);
   });
   it('should allow empty options', function() {
@@ -42,7 +68,11 @@ describe('mediator', function() {
     mediator.register('to', (message) => {
       expect(message).toEqual('message');
     });
-    mediator.send('message', 'from', 'to');
+    mediator.send({
+      message: 'message',
+      from: 'from',
+      to: 'to'
+    });
   });
   it('should wrap with pattern', function() {
     expect(constructor).toHaveBeenCalledWith('test');
