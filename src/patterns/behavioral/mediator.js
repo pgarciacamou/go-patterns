@@ -16,9 +16,6 @@ export default createPatternBuilder(options => {
     },
 
     send({message, from, to}) {
-      if(to === undefined) {
-        return this.broadcast({message, from});
-      }
       this.participants[to] && this.participants[to](message, from);
       return this;
     },

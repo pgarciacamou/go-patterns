@@ -91,12 +91,12 @@ describe('mediator', function() {
   it('should be able to broadcast', function() {
     expect(participantA).toHaveBeenCalledWith('broadcast', 'participantA');
     expect(participantB).toHaveBeenCalledWith('broadcast', 'participantA');
-    expect(participantA).toHaveBeenCalledWith('send broadcast', 'participantA');
-    expect(participantB).toHaveBeenCalledWith('send broadcast', 'participantA');
+    expect(participantA).not.toHaveBeenCalledWith('send broadcast', 'participantA');
+    expect(participantB).not.toHaveBeenCalledWith('send broadcast', 'participantA');
   });
   it('allows sending anonymous messages', function() {
     expect(participantA).toHaveBeenCalledWith('anonymous', undefined);
-    expect(participantA).toHaveBeenCalledWith('send anonymous broadcast', undefined);
+    expect(participantA).not.toHaveBeenCalledWith('send anonymous broadcast', undefined);
     expect(participantA).toHaveBeenCalledWith('anonymous broadcast', undefined);
   });
   it('should dismiss messages for participants not registered on time', function() {
