@@ -7,11 +7,15 @@ export default createPatternBuilder(options => {
     options.constructor.apply(this, args);
   }
   extend(Flyweight.prototype, {
-    create(...args) {
-      return this.heuristic(...args);
+    create(name, creator, ...args) {
+      if(this.heuristic(name)) {
+        this.flyweights[name] = creator instanceof Function ? creator(...args) : creator;
+      }
+      return this.flyweights[name];
     },
-    heuristic(name, obj) {
-      return this.flyweights[name] = this.flyweights[name] || obj;
+
+    heuristic(name) {
+      return this.flyweights[name] === undefined;
     }
   });
   return Flyweight;

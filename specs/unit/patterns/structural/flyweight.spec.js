@@ -9,8 +9,8 @@ describe('flyweight', function() {
   beforeEach(function() {
     Flyweight = flyweightBuilder({
       publics: {
-        heuristic(name, obj) {
-          return this.flyweights[name] = this.flyweights[name] || obj;
+        heuristic(name) {
+          return !!name && this.flyweights[name] === undefined;
         }
       }
     }).build();
@@ -24,11 +24,11 @@ describe('flyweight', function() {
     flyweight.create('test', {test: 'testing'});
     expect(flyweight.flyweights['test'].test).toEqual('testing');
   });
-  it('should throw an error', function() {
+  it('should NOT throw an error', function() {
     expect(function() {
       var Flyweight = flyweightBuilder().build();
       var flyweight = new Flyweight();
-      flyweight.create();
+      flyweight.create('test', {});
     }).not.toThrowError('Flyweight is missing heuristic public method.');
   });
   it('should create a flyweight object', function() {
@@ -37,6 +37,14 @@ describe('flyweight', function() {
     });
     expect(test).toBeDefined();
     expect(test.test).toEqual('testing');
+  });
+  it('should create a flyweight object from a function', function() {
+    function creator(arg) {
+      return { test: `testing-${arg}` };
+    }
+    var test = flyweight.create('test', creator, 1);
+    expect(test).toBeDefined();
+    expect(test.test).toEqual('testing-1');
   });
   it('should return a previously created flyweight object', function() {
     flyweight.create('test', {
@@ -58,8 +66,14 @@ describe('flyweight', function() {
       factorials = [2, 3, 4];
       FactorialMemoizationFlyweight = singletonBuilder(flyweightBuilder({
         publics: {
+          create(val) {
+            if(this.heuristic(val)) {
+              this.flyweights[`${val}`] = this.factorial(val);
+            }
+            return this.flyweights[`${val}`];
+          },
           heuristic(val) {
-            return this.flyweights[val + ''] = this.flyweights[val] || this.factorial(val);
+            return this.flyweights[`${val}`] === undefined;
           },
           factorial(val) {
             if(val <= 1) return 1;
@@ -94,12 +108,12 @@ describe('flyweight', function() {
       }
 
       LightObjectCreation = flyweightBuilder({
-        constructor() {
+        constructor: function() {
           // this overrides the default object.
           this.flyweights = [];
         },
         publics: {
-          heuristic(params) {
+          create(params) {
             return this.find(params) || this.construct(params);
           },
           construct(params) {
@@ -152,7 +166,8 @@ describe('flyweight', function() {
       BookFactory = factoryBuilder().build();
 
       BookStore = flyweightBuilder({
-        constructor() {
+        constructor: function() {
+          this.books = {};
           this.bookFactory = new BookFactory();
           this.bookFactory.add('book', Book);
 
@@ -160,12 +175,20 @@ describe('flyweight', function() {
           this.bookRecordDatabase = {};
         },
         publics: {
-          heuristic(book) {
-            return this.flyweights[book.ISBN] = this.flyweights[book.ISBN] || this.bookFactory.create('book', book);
+          create(book) {
+            return this.books[book.ISBN] = this.heuristic(book) ? this.bookFactory.create('book', book) : this.books[book.ISBN];
+          },
+          heuristic({ISBN}) {
+            return this.books[ISBN] === undefined;
           },
           addBookRecord({id, title, author, genre, pageCount, publisherID, ISBN, checkoutDate, checkoutMember, dueReturnDate, availability}) {
-            let book = this.create({title, author, genre, pageCount, publisherID, ISBN});
-            this.bookRecordDatabase[id] = {checkoutMember, checkoutDate, dueReturnDate, availability, book};
+            this.bookRecordDatabase[id] = {
+              checkoutMember,
+              checkoutDate,
+              dueReturnDate,
+              availability,
+              book: this.create({title, author, genre, pageCount, publisherID, ISBN})
+            };
           },
           updateCheckoutStatus(bookID, newStatus, checkoutDate, checkoutMember, newReturnDate) {
             let record = this.bookRecordDatabase[bookID];
@@ -232,7 +255,7 @@ describe('flyweight', function() {
       });
     });
     it('should only create a book once.', function() {
-      expect(Object.keys(bookStore.flyweights).length).toEqual(1);
+      expect(Object.keys(bookStore.books).length).toEqual(1);
     });
   });
 });
