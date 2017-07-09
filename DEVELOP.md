@@ -17,3 +17,13 @@ NOTE: `npm reinstall` should be run **always** after pulling from **master** bra
 6. Upload new tag created on step 5: `git push origin <new tag>`
 7. Create release in GitHub (attach dist/* files created in step 3)
 8. Publish: `npm publish`
+
+### Checklist for any PRs
+
+If needed, Copy paste the following checklist:
+
+```
+- [ ] Implement feature/update
+- [ ] Update unit tests
+- [ ] Update CHANGELOG.md
+```
