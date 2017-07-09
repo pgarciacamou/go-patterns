@@ -20,7 +20,7 @@ NOTE: `npm reinstall` should be run **always** after pulling from **master** bra
 
 ### Checklist for any PRs
 
-If needed, Copy paste the following checklist:
+If needed, copy & paste the following checklist:
 
 ```
 - [ ] Implement feature/update
