@@ -51,4 +51,7 @@ describe('Singleton', function() {
     new Singleton('test');
     expect(executionSpy.calls.count()).toEqual(2);
   });
+  it('returns the instance created', function() {
+    expect(singleton.getInstance() === new Singleton('test'));
+  });
 });
