@@ -13,6 +13,9 @@ export default createPatternBuilder(options => {
   extend(Singleton.prototype, {
     destroy() {
       instance = undefined;
+    },
+    getInstance() {
+      return instance;
     }
   });
 
