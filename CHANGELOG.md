@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Fixed
+### Changed
+
+## [v3.0.1](https://github.com/pgarciacamou/go-patterns/releases/tag/v3.0.1) - 2017-07-22
+### Fixed
 - Minor updates to code.
 ### Changed
 - Refactor `extend()` helper to use Object.assign by using babel plugin transform-object-assign.
@@ -33,11 +37,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Introducing MVW pattern.
 - Expose createPatternBuilder functionality.
 - Now using Travis CI.
-
 ### Fixed
 - We can now use the library without having to have ES6 features.
 - Created a lib/ directory to publish to npm.
-
 ### Changed
 - Changed package.json "main" to lib/go-patterns.js.
 - Modified babel presets and plugins.
@@ -45,11 +47,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [v1.0.2](https://github.com/pgarciacamou/go-patterns/releases/tag/v1.0.2) - 2017-04-23
 ### Added
 - Introduced CHANGELOG.md into project.
-
 ### Fixed
 - Library had dependencies listed but are only used for development.
 - Flyweight now allows empty options as do the rest of the patterns.
-
 ### Changed
 - Source and distribution files were renamed from index/bundle to library name.
 - Unit tests are now testing the library's root index.js file instead of an inner file.
