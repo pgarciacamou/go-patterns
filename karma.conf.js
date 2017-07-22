@@ -33,7 +33,7 @@ module.exports = function(config) {
       transform: [ 
         ['babelify', {
           presets: [ "es2015", "es2016", "es2017" ],
-          plugins: [ "transform-object-rest-spread" ]
+          plugins: [ "transform-object-rest-spread", "transform-object-assign" ]
         }] 
       ],
       extensions: [ '.js' ]
