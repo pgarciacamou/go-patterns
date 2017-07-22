@@ -3,7 +3,7 @@ import extend from './extend.js';
 export default function createPatternBuilder(getPattern) {
   return function(options = {}) {
     options = extend({
-      constructor: () => {},
+      constructor: function() {},
       publics: {},
       statics: {}
     }, options);

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Fixed
+- Minor updates to code.
 ### Changed
 
 ## [v3.0.0](https://github.com/pgarciacamou/go-patterns/releases/tag/v3.0.0) - 2017-07-04
