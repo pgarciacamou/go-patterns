@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `getInstance()` is a new method of Singleton class.
 ### Fixed
 - Move public props to prototype object of outer most pattern.
 ### Changed
