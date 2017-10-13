@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+### Fixed
+### Changed
+
+## [v3.1.0](https://github.com/pgarciacamou/go-patterns/releases/tag/v3.1.0) - 2017-07-22
+### Added
 - `getInstance()` is a new method of Singleton class.
 ### Fixed
 - Move public props to prototype object of outer most pattern.
