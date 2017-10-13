@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 ### Fixed
+- Move public props to prototype object of outer most pattern.
 ### Changed
 
 ## [v3.0.1](https://github.com/pgarciacamou/go-patterns/releases/tag/v3.0.1) - 2017-07-22
