@@ -15,8 +15,10 @@ describe('patterns API', function() {
     expect(patterns.memento).toBeDefined();
     expect(patterns.flyweight).toBeDefined();
     expect(patterns.mvw).toBeDefined();
+    expect(patterns.decorator).toBeDefined();
   });
   it('should expose new patterns functionality', function() {
     expect(patterns.createNew).toBeDefined();
+    expect(patterns.Interface).toBeDefined();
   });
 });
